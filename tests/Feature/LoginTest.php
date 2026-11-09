@@ -75,13 +75,16 @@ class LoginTest extends TestCase
             $this->actingAs(User::factory()->create(['role' => $role]));
 
             foreach ([
-                'simora.orgmate' => 'ORGMATE',
-                'simora.e-progress' => 'E-PROGRESS',
-                'simora.sentra' => 'SENTRA',
-            ] as $routeName => $moduleName) {
+                'simora.orgmate' => ['ORGMATE', 'Dashboard Organisasi'],
+                'simora.e-progress' => ['E-PROGRESS', 'Dashboard Kegiatan'],
+                'simora.sentra' => ['SENTRA', 'Dashboard Keuangan'],
+            ] as $routeName => [$moduleName, $dashboardTitle]) {
+                // Assertion struktural: status + identitas modul + judul dashboard
+                // aktual (bukan pola rapuh "Dashboard {KODE}").
                 $this->get(route($routeName))
                     ->assertOk()
-                    ->assertSee("Dashboard {$moduleName}");
+                    ->assertSee($moduleName)
+                    ->assertSee($dashboardTitle);
             }
         }
     }

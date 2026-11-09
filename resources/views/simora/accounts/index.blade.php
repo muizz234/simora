@@ -4,12 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.seo-head')
     <title>Kelola Akun | SIMORA</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/SIMORA.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <link rel="stylesheet" href="/assets/css/panel.css?v=5">
-    <link rel="stylesheet" href="/assets/css/organization-admin.css?v=2">
-    <link rel="stylesheet" href="/assets/css/account-admin.css?v=2">
+    @vite(['resources/css/simora/panel/panel.css', 'resources/css/simora/organizations/organization-admin.css', 'resources/css/simora/accounts/account-admin.css'])
 </head>
 
 <body class="panel-page">

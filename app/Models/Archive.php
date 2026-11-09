@@ -52,9 +52,10 @@ class Archive extends Model
             return asset($this->file_path);
         }
 
-        $url = Storage::disk('public')->url($this->file_path);
-        $mtime = @filemtime(Storage::disk('public')->path($this->file_path));
+        if (! Storage::disk('local')->exists($this->file_path)) {
+            return null;
+        }
 
-        return $url.($mtime ? '?v='.$mtime : '');
+        return route('simora.orgmate.arsip.download', $this);
     }
 }

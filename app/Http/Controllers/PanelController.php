@@ -6,7 +6,6 @@ use App\Models\Activity;
 use App\Models\CashTransaction;
 use App\Models\Dues;
 use App\Models\Organization;
-use App\Models\Proposal;
 use App\Models\User;
 use App\Models\WorkProgram;
 use Illuminate\Http\Request;

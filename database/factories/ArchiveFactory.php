@@ -21,7 +21,7 @@ class ArchiveFactory extends Factory
         return [
             'organization_id' => Organization::factory(),
             'uploaded_by' => null,
-            'title' => fake()->randomElement(['SK Kepengurusan', 'Surat Tugas Kegiatan', 'Surat Undangan', 'SK Panitia']), 
+            'title' => fake()->randomElement(['SK Kepengurusan', 'Surat Tugas Kegiatan', 'Surat Undangan', 'SK Panitia']),
             'type' => fake()->randomElement(['sk', 'surat_masuk', 'surat_keluar']),
             'number' => fake()->optional()->bothify('###/SK/?#/FT/?##'),
             'date' => fake()->date(),

@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'sso_unuja' => [
+        'base_url' => env('SSO_UNUJA_BASE_URL', 'https://sso.unuja.ac.id'),
+        'token' => env('SSO_UNUJA_TOKEN'),
+        'dev_id' => env('SSO_UNUJA_DEV_ID'),
+        'app_id' => env('SSO_UNUJA_APP_ID'),
+    ],
+
 ];

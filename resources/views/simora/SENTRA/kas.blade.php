@@ -9,7 +9,7 @@
         <div class="sentra-head-right">
             @if(($isDeveloper ?? false) && ($organizationsList ?? collect())->count() > 0)
                 <form method="GET" action="{{ route('simora.sentra.kas') }}" class="sentra-periode">
-                    <i data-lucide="building-2"></i><label>Organisasi:</label>
+                    <i data-lucide="building-2" class="icon"></i><label>Organisasi:</label>
                     <select name="organization" onchange="this.form.submit()">
                         <option value="">Semua Organisasi</option>
                         @foreach ($organizationsList as $org)
@@ -19,7 +19,7 @@
                 </form>
             @endif
             @if(auth()->user()->role !== 'developer')
-                <a class="orgmate-btn" href="#tambah-transaksi"><i data-lucide="plus"></i> Tambah Transaksi</a>
+                <a class="orgmate-btn" href="#tambah-transaksi"><i data-lucide="plus" class="icon"></i> Tambah Transaksi</a>
             @else
                 <span class="badge gray">Mode manajemen organisasi (view-only)</span>
             @endif
@@ -31,33 +31,33 @@
     @endif
 
     <div class="sentra-summary-grid">
-        <article class="sentra-stat sentra-stat--blue"><span class="sentra-stat-icon"><i data-lucide="wallet"></i></span>
+        <article class="sentra-stat sentra-stat--blue"><span class="sentra-stat-icon"><i data-lucide="wallet" class="icon"></i></span>
             <div><span>Saldo Kas</span><strong>Rp{{ number_format($totalPemasukan - $totalPengeluaran, 0, ',', '.') }}</strong><small>Pemasukan − Pengeluaran</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--green"><span class="sentra-stat-icon"><i data-lucide="arrow-up-circle"></i></span>
+        <article class="sentra-stat sentra-stat--green"><span class="sentra-stat-icon"><i data-lucide="circle-arrow-up" class="icon"></i></span>
             <div><span>Pemasukan</span><strong>Rp{{ number_format($totalPemasukan, 0, ',', '.') }}</strong><small>Total semua transaksi</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--red"><span class="sentra-stat-icon"><i data-lucide="arrow-down-circle"></i></span>
+        <article class="sentra-stat sentra-stat--red"><span class="sentra-stat-icon"><i data-lucide="circle-arrow-down" class="icon"></i></span>
             <div><span>Pengeluaran</span><strong>Rp{{ number_format($totalPengeluaran, 0, ',', '.') }}</strong><small>Total semua transaksi</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--purple"><span class="sentra-stat-icon"><i data-lucide="calculator"></i></span>
+        <article class="sentra-stat sentra-stat--purple"><span class="sentra-stat-icon"><i data-lucide="calculator" class="icon"></i></span>
             <div><span>Total Transaksi</span><strong>{{ $transaksi->total() }}</strong><small>Semua sumber kas</small></div>
         </article>
     </div>
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="list"></i> Daftar Transaksi</h2>
+            <h2><i data-lucide="list" class="icon"></i> Daftar Transaksi</h2>
             <span class="badge gray">{{ $transaksi->total() }} transaksi</span>
         </div>
         <form method="GET" action="{{ route('simora.sentra.kas') }}" class="sentra-toolbar" role="search">
             @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
             <label class="orgmate-search" style="margin:0;flex:1;min-width:200px">
-                <i data-lucide="search"></i>
+                <i data-lucide="search" class="icon"></i>
                 <input type="search" name="q" value="{{ $q }}" placeholder="Cari judul atau kategori..."
                     aria-label="Cari transaksi">
             </label>
-            <button class="orgmate-btn ghost" type="submit"><i data-lucide="search"></i> Cari</button>
+            <button class="orgmate-btn ghost" type="submit"><i data-lucide="search" class="icon"></i> Cari</button>
             @if ($q !== '')
                 <a class="orgmate-btn ghost" href="{{ route('simora.sentra.kas', $selectedOrganization ? ['organization' => $selectedOrganization->slug] : []) }}">Reset</a>
             @endif
@@ -88,7 +88,7 @@
                         @foreach ($transaksi as $transaction)
                             <tr>
                                 <td class="orgmate-member-cell">
-                                    <span class="sentra-tx-ico {{ $transaction->type === 'pemasukan' ? 'sentra-tx-ico--masuk' : 'sentra-tx-ico--keluar' }}"><i data-lucide="{{ $transaction->type === 'pemasukan' ? 'arrow-down' : 'arrow-up' }}"></i></span>
+                                    <span class="sentra-tx-ico {{ $transaction->type === 'pemasukan' ? 'sentra-tx-ico--masuk' : 'sentra-tx-ico--keluar' }}"><i data-lucide="{{ $transaction->type === 'pemasukan' ? 'arrow-down' : 'arrow-up' }}" class="icon"></i></span>
                                     <span><strong>{{ $transaction->title }}</strong><small class="orgmate-field-hint">{{ $transaction->category ?? 'Umum' }}</small></span>
                                 </td>
                                 <td>{{ $transaction->date?->locale('id')->translatedFormat('d M Y') ?? '—' }}</td>
@@ -126,7 +126,7 @@
     @if(auth()->user()->role !== 'developer')
         <div class="orgmate-card" id="tambah-transaksi">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus-circle"></i> Tambah Transaksi</h2>
+                <h2><i data-lucide="circle-plus" class="icon"></i> Tambah Transaksi</h2>
             </div>
             <form method="POST" action="{{ route('simora.sentra.kas.store') }}" class="orgmate-form" enctype="multipart/form-data">
                 @csrf
@@ -165,14 +165,14 @@
                         @error('proof')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                     </div>
                 </div>
-                <button type="submit" class="orgmate-btn"><i data-lucide="save"></i> Simpan Transaksi</button>
+                <button type="submit" class="orgmate-btn"><i data-lucide="save" class="icon"></i> Simpan Transaksi</button>
             </form>
         </div>
 
         @foreach ($transaksi as $transaction)
             <dialog class="orgmate-dialog" id="editTx-{{ $transaction->id }}" aria-labelledby="editTxTitle-{{ $transaction->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editTxTitle-{{ $transaction->id }}">Edit Transaksi</h2>
                 <form method="POST" action="{{ route('simora.sentra.kas.update', $transaction) }}" enctype="multipart/form-data">

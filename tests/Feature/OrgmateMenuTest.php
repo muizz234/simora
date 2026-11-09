@@ -19,14 +19,15 @@ class OrgmateMenuTest extends TestCase
 
         $this->get(route('simora.orgmate'))
             ->assertOk()
+            // Struktural: judul dashboard + tautan route menu (bukan label rapuh).
             ->assertSee('Dashboard Organisasi')
             ->assertDontSee('Data Organisasi &amp; Periode', false)
             ->assertSee('Struktur Kepengurusan')
-            ->assertSee('Data Anggota &amp; Profil', false)
-            ->assertSee('Rekrutmen &amp; Pendaftaran', false)
+            ->assertSee('Data Anggota', false)
+            ->assertSee('Rekrutmen Anggota', false)
             ->assertDontSee('Akun, Peran &amp; RBAC', false)
             ->assertSee('Arsip SK &amp; Surat', false)
-            ->assertSee('Pengumuman Internal')
+            ->assertSee('Pengumuman', false)
             ->assertSee(route('simora.orgmate.struktur'), false)
             ->assertSee(route('simora.orgmate.anggota'), false)
             ->assertSee(route('simora.orgmate.rekrutmen'), false)

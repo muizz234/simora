@@ -23,7 +23,7 @@ class ProposalFactory extends Factory
             'activity_id' => null,
             'submitted_by' => null,
             'decided_by' => null,
-            'title' => fake()->randomElement(['Proposal Kegiatan', 'Pengajuan Dana Kegiatan', 'Usulan Program Kerja']), 
+            'title' => fake()->randomElement(['Proposal Kegiatan', 'Pengajuan Dana Kegiatan', 'Usulan Program Kerja']),
             'description' => fake()->optional()->paragraph(),
             'status' => fake()->randomElement(['menunggu', 'disetujui', 'ditolak']),
             'decided_at' => null,

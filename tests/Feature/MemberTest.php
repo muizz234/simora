@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Mahasiswa;
 use App\Models\Member;
 use App\Models\Organization;
 use App\Models\User;
@@ -172,5 +173,55 @@ class MemberTest extends TestCase
                 'nim' => '2301010001',
             ])
             ->assertRedirect(route('simora.orgmate.anggota'));
+    }
+
+    public function test_organization_adds_member_by_picking_mahasiswa_of_own_prodi_grouped_by_angkatan(): void
+    {
+        $organization = Organization::factory()->create(['focus' => 'Teknologi Informasi']);
+        $account = User::factory()->create([
+            'role' => User::ROLE_ORGANIZATION,
+            'organization_id' => $organization->id,
+        ]);
+        $mahasiswa = Mahasiswa::factory()->create([
+            'nim' => '2301010001',
+            'name' => 'Budi Santoso',
+            'study_program' => 'Teknologi Informasi',
+            'enrollment_year' => '20231',
+        ]);
+
+        $this->actingAs($account)
+            ->get(route('simora.orgmate.anggota'))
+            ->assertOk()
+            ->assertSee('Angkatan 2023')
+            ->assertSee('Budi Santoso — 2301010001');
+
+        $this->actingAs($account)
+            ->post(route('simora.orgmate.anggota.store'), [
+                'mahasiswa_id' => $mahasiswa->id,
+            ])
+            ->assertRedirect(route('simora.orgmate.anggota'));
+
+        $this->assertDatabaseHas('members', [
+            'organization_id' => $organization->id,
+            'nim' => '2301010001',
+            'name' => 'Budi Santoso',
+            'study_program' => 'Teknologi Informasi',
+        ]);
+    }
+
+    public function test_organization_cannot_add_member_from_another_prodi_mahasiswa(): void
+    {
+        $organization = Organization::factory()->create(['focus' => 'Teknologi Informasi']);
+        $account = User::factory()->create([
+            'role' => User::ROLE_ORGANIZATION,
+            'organization_id' => $organization->id,
+        ]);
+        $otherProdi = Mahasiswa::factory()->create(['study_program' => 'Teknik Informatika']);
+
+        $this->actingAs($account)
+            ->post(route('simora.orgmate.anggota.store'), [
+                'mahasiswa_id' => $otherProdi->id,
+            ])
+            ->assertSessionHasErrors('mahasiswa_id');
     }
 }

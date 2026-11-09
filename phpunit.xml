@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Jalankan test:
+     php artisan test (compact)
+     php artisan test (compact) (parallel)            (membutuhkan brianium/paratest — belum terpasang)
+     php artisan test (compact) (coverage)            (membutuhkan driver xdebug/pcov — belum terpasang)
+     Catatan: SQLite in-memory (:memory:) dipakai sesuai env testing di bawah. -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"

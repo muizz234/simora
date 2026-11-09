@@ -36,14 +36,14 @@
         </div>
     @else
         <div class="eprogress-stats eprogress-stats-3">
-            <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="users"></i></span><div><span>Total Hadir</span><strong>{{ $stats['totalHadir'] }}</strong><small>Pada kegiatan terpilih</small></div></article>
-            <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="qr-code"></i></span><div><span>Via QR Code</span><strong>{{ $stats['viaQr'] }}</strong><small>Scan QR peserta</small></div></article>
-            <article class="eprogress-stat eprogress-stat--pastel-amber"><span class="eprogress-stat-icon"><i data-lucide="pen-line"></i></span><div><span>Manual</span><strong>{{ $stats['manual'] }}</strong><small>Dicatat panitia</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="users" class="icon"></i></span><div><span>Total Hadir</span><strong>{{ $stats['totalHadir'] }}</strong><small>Pada kegiatan terpilih</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="qr-code" class="icon"></i></span><div><span>Via QR Code</span><strong>{{ $stats['viaQr'] }}</strong><small>Scan QR peserta</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-amber"><span class="eprogress-stat-icon"><i data-lucide="pen-line" class="icon"></i></span><div><span>Manual</span><strong>{{ $stats['manual'] }}</strong><small>Dicatat panitia</small></div></article>
         </div>
 
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="flag"></i> Pilih Kegiatan</h2>
+                <h2><i data-lucide="flag" class="icon"></i> Pilih Kegiatan</h2>
                 <form method="GET" action="{{ route('simora.e-progress.presensi') }}" class="orgmate-org-form orgmate-org-form--inline eprogress-panitia-select">
                     @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
                     <label for="activitySelect">Kegiatan:</label>
@@ -58,7 +58,7 @@
 
         <div class="eprogress-presensi-grid">
             <div class="orgmate-card eprogress-qr-card" id="qrPrintArea">
-                <div class="orgmate-card-head"><h2><i data-lucide="qr-code"></i> QR Presensi</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="qr-code" class="icon"></i> QR Presensi</h2></div>
                 <p class="orgmate-hint">Tayangkan QR ini di pintu masuk. Peserta scan, lalu isi nama mereka.</p>
                 @if ($selectedActivity && $checkinUrl)
                     <div class="eprogress-qr-box" id="qrBox">
@@ -69,20 +69,20 @@
                     <p class="orgmate-field-hint">Tautan check-in (berlaku khusus kegiatan ini):</p>
                     <code class="eprogress-qr-url">{{ $checkinUrl }}</code>
                     <div class="eprogress-qr-actions">
-                        <a class="orgmate-btn ghost orgmate-btn-sm" href="{{ $checkinUrl }}" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Check-in</a>
-                        <button type="button" class="orgmate-btn ghost orgmate-btn-sm" id="qrDownloadBtn"><i data-lucide="download"></i> Unduh QR</button>
-                        <button type="button" class="orgmate-btn ghost orgmate-btn-sm" id="qrPrintBtn"><i data-lucide="printer"></i> Cetak</button>
+                        <a class="orgmate-btn ghost orgmate-btn-sm" href="{{ $checkinUrl }}" target="_blank" rel="noopener"><i data-lucide="external-link" class="icon"></i> Check-in</a>
+                        <button type="button" class="orgmate-btn ghost orgmate-btn-sm" id="qrDownloadBtn"><i data-lucide="download" class="icon"></i> Unduh QR</button>
+                        <button type="button" class="orgmate-btn ghost orgmate-btn-sm" id="qrPrintBtn"><i data-lucide="printer" class="icon"></i> Cetak</button>
                     </div>
                 @endif
             </div>
 
             <div class="orgmate-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="list-checks"></i> Daftar Kehadiran</h2>
+                    <h2><i data-lucide="list-checks" class="icon"></i> Daftar Kehadiran</h2>
                     <form method="GET" action="{{ route('simora.e-progress.presensi') }}" class="eprogress-attendance-search">
                         @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
                         @if($selectedActivity)<input type="hidden" name="activity" value="{{ $selectedActivity->id }}">@endif
-                        <i data-lucide="search"></i>
+                        <i data-lucide="search" class="icon"></i>
                         <input type="search" name="q" value="{{ $search }}" placeholder="Cari nama peserta..." aria-label="Cari nama peserta">
                     </form>
                 </div>
@@ -126,7 +126,7 @@
 
         @if(!($isDeveloper ?? false))
             <section class="orgmate-card" aria-label="Tambah presensi manual">
-                <div class="orgmate-card-head"><h2><i data-lucide="pen-line"></i> Catat Manual</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="pen-line" class="icon"></i> Catat Manual</h2></div>
                 <form method="POST" action="{{ route('simora.e-progress.presensi.store') }}" class="orgmate-form">
                     @csrf
                     <input type="hidden" name="activity_id" value="{{ $selectedActivity?->id }}">

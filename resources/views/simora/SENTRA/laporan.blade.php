@@ -8,7 +8,7 @@
         </div>
         @if(($isDeveloper ?? false) && ($organizationsList ?? collect())->count() > 0)
         <form method="GET" action="{{ route('simora.sentra.laporan') }}" class="sentra-periode">
-            <i data-lucide="building-2"></i>
+            <i data-lucide="building-2" class="icon"></i>
             <label for="laporanOrgSelect">Organisasi:</label>
             <select id="laporanOrgSelect" name="organization" onchange="this.form.submit()">
                 <option value="">Semua Organisasi</option>
@@ -19,7 +19,7 @@
         </form>
     @endif
     <form method="GET" action="{{ route('simora.sentra.laporan') }}" class="sentra-periode">
-            <i data-lucide="calendar-days"></i>
+            <i data-lucide="calendar-days" class="icon"></i>
             <label>Periode:</label>
             <select name="periode" onchange="this.form.submit()">
                 @foreach (['2026', '2025', '2024'] as $y)
@@ -31,12 +31,12 @@
 
     <div class="orgmate-card" id="printArea">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="file-bar-chart"></i> Laporan Keuangan Tahun {{ $periode }} — {{ $orgName }}</h2>
+            <h2><i data-lucide="file-chart-column" class="icon"></i> Laporan Keuangan Tahun {{ $periode }} — {{ $orgName }}</h2>
             <div class="sentra-actions" style="margin:0">
                 <a class="orgmate-btn ghost"
                     href="{{ route('simora.sentra.laporan') }}?periode={{ $periode }}&format=excel{{ ($isDeveloper ?? false) && $selectedOrganization ? '&organization='.$selectedOrganization->slug : '' }}"><i
                         data-lucide="sheet"></i> Excel</a>
-                <button class="orgmate-btn" type="button" onclick="window.print()"><i data-lucide="file-text"></i> PDF
+                <button class="orgmate-btn" type="button" onclick="window.print()"><i data-lucide="file-text" class="icon"></i> PDF
                     (Cetak)</button>
             </div>
         </div>

@@ -21,7 +21,7 @@ class AnnouncementFactory extends Factory
         return [
             'organization_id' => Organization::factory(),
             'created_by' => null,
-            'title' => fake()->randomElement(['Rapat Internal', 'Pengumuman Kegiatan', 'Libur Kepengurusan', 'Open Recruitment']), 
+            'title' => fake()->randomElement(['Rapat Internal', 'Pengumuman Kegiatan', 'Libur Kepengurusan', 'Open Recruitment']),
             'content' => fake()->paragraph(),
             'published_at' => now(),
         ];

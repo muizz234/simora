@@ -36,14 +36,14 @@
         </div>
     @else
         <div class="eprogress-stats eprogress-stats-3">
-            <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="clipboard-list"></i></span><div><span>Total Dokumen</span><strong>{{ $stats['total'] }}</strong><small>Pada kegiatan terpilih</small></div></article>
-            <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="search-check"></i></span><div><span>Evaluasi</span><strong>{{ $stats['evaluasi'] }}</strong><small>Catatan evaluasi</small></div></article>
-            <article class="eprogress-stat eprogress-stat--pastel-amber"><span class="eprogress-stat-icon"><i data-lucide="file-text"></i></span><div><span>LPJ</span><strong>{{ $stats['lpj'] }}</strong><small>Laporan pertanggungjawaban</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="clipboard-list" class="icon"></i></span><div><span>Total Dokumen</span><strong>{{ $stats['total'] }}</strong><small>Pada kegiatan terpilih</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="search-check" class="icon"></i></span><div><span>Evaluasi</span><strong>{{ $stats['evaluasi'] }}</strong><small>Catatan evaluasi</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-amber"><span class="eprogress-stat-icon"><i data-lucide="file-text" class="icon"></i></span><div><span>LPJ</span><strong>{{ $stats['lpj'] }}</strong><small>Laporan pertanggungjawaban</small></div></article>
         </div>
 
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="flag"></i> Pilih Kegiatan</h2>
+                <h2><i data-lucide="flag" class="icon"></i> Pilih Kegiatan</h2>
                 <form method="GET" action="{{ route('simora.e-progress.evaluasi') }}" class="orgmate-org-form orgmate-org-form--inline eprogress-panitia-select">
                     @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
                     <label for="activitySelect">Kegiatan:</label>
@@ -56,7 +56,7 @@
             </div>
             @if ($selectedActivity)
                 <div class="orgmate-post" style="margin-bottom:0">
-                    <span class="orgmate-post-icon"><i data-lucide="calendar-check"></i></span>
+                    <span class="orgmate-post-icon"><i data-lucide="calendar-check" class="icon"></i></span>
                     <div style="flex:1;min-width:0">
                         <h3>{{ $selectedActivity->name }}</h3>
                         <p>{{ $selectedActivity->description ?: ($selectedActivity->location ?: 'Tanpa keterangan tambahan.') }}</p>
@@ -78,12 +78,12 @@
 
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="scroll-text"></i> Daftar Dokumen</h2>
+                <h2><i data-lucide="scroll-text" class="icon"></i> Daftar Dokumen</h2>
                 <span class="badge gray">{{ $evaluations->count() }} dokumen</span>
             </div>
             @forelse ($evaluations as $evaluation)
                 <div class="orgmate-post">
-                    <span class="orgmate-post-icon"><i data-lucide="{{ $evaluation->type === 'lpj' ? 'file-text' : 'search-check' }}"></i></span>
+                    <span class="orgmate-post-icon"><i data-lucide="{{ $evaluation->type === 'lpj' ? 'file-text' : 'search-check' }}" class="icon"></i></span>
                     <div style="flex:1;min-width:0">
                         <h3>{{ $evaluation->title }}</h3>
                         <p>{{ \Illuminate\Support\Str::limit($evaluation->content ?: 'Tanpa isi.', 160) }}</p>
@@ -119,7 +119,7 @@
 
         @if(!($isDeveloper ?? false))
             <section class="orgmate-card" aria-label="Tambah evaluasi atau LPJ">
-                <div class="orgmate-card-head"><h2><i data-lucide="pen-line"></i> Tulis Dokumen</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="pen-line" class="icon"></i> Tulis Dokumen</h2></div>
                 <form method="POST" action="{{ route('simora.e-progress.evaluasi.store') }}" class="orgmate-form">
                     @csrf
                     <div class="orgmate-form-grid">
@@ -161,7 +161,7 @@
             @foreach ($evaluations as $evaluation)
                 <dialog class="orgmate-dialog" id="editEval-{{ $evaluation->id }}" aria-labelledby="editEvalTitle-{{ $evaluation->id }}">
                     <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                     </form>
                     <h2 class="orgmate-dialog-title" id="editEvalTitle-{{ $evaluation->id }}">Edit Dokumen</h2>
                     <form method="POST" action="{{ route('simora.e-progress.evaluasi.update', $evaluation) }}">

@@ -40,7 +40,12 @@ class AttendanceTest extends TestCase
     public function test_guest_can_check_in_via_signed_qr_url(): void
     {
         $organization = Organization::factory()->create();
-        $activity = Activity::factory()->create(['organization_id' => $organization->id, 'name' => 'Seminar Nasional']);
+        $activity = Activity::factory()->create([
+            'organization_id' => $organization->id,
+            'name' => 'Seminar Nasional',
+            'start_at' => now()->subHour(),
+            'end_at' => now()->addHours(2),
+        ]);
 
         $signedUrl = URL::signedRoute('presensi.checkin', ['activity' => $activity->id]);
 

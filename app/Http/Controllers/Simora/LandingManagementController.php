@@ -24,9 +24,9 @@ class LandingManagementController extends Controller
         $footerSetting->update($request->validate([
             'identity_text' => ['required', 'string', 'max:255'],
             'tagline' => ['required', 'string', 'max:120'],
-            'instagram_url' => ['required', 'url', 'max:2048'],
-            'tiktok_url' => ['required', 'url', 'max:2048'],
-            'website_url' => ['required', 'url', 'max:2048'],
+            'instagram_url' => ['required', 'url', 'regex:/^https?:\/\//', 'max:2048'],
+            'tiktok_url' => ['required', 'url', 'regex:/^https?:\/\//', 'max:2048'],
+            'website_url' => ['required', 'url', 'regex:/^https?:\/\//', 'max:2048'],
         ]));
 
         return redirect()->route('simora.landing-management')

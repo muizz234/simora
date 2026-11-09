@@ -8,25 +8,26 @@ use App\Http\Controllers\LandingStructureController;
 use App\Http\Controllers\OrganizationSocialController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\Simora\AccountController;
-use App\Http\Controllers\Simora\DuesController;
+use App\Http\Controllers\Simora\ActivityController;
+use App\Http\Controllers\Simora\AnnouncementController;
+use App\Http\Controllers\Simora\ArchiveController;
+use App\Http\Controllers\Simora\AttendanceController;
 use App\Http\Controllers\Simora\BudgetController;
-use App\Http\Controllers\Simora\RealizationController;
 use App\Http\Controllers\Simora\CashTransactionController;
+use App\Http\Controllers\Simora\CommitteeController;
+use App\Http\Controllers\Simora\DocumentationController;
+use App\Http\Controllers\Simora\DuesController;
 use App\Http\Controllers\Simora\EProgressController;
+use App\Http\Controllers\Simora\EvaluationController;
 use App\Http\Controllers\Simora\LandingManagementController;
+use App\Http\Controllers\Simora\MahasiswaController;
+use App\Http\Controllers\Simora\MemberController;
 use App\Http\Controllers\Simora\OrganizationController;
 use App\Http\Controllers\Simora\OrganizationRegistrationController;
 use App\Http\Controllers\Simora\OrganizationVisionMissionController;
 use App\Http\Controllers\Simora\OrgmateController;
-use App\Http\Controllers\Simora\ActivityController;
-use App\Http\Controllers\Simora\AnnouncementController;
-use App\Http\Controllers\Simora\AttendanceController;
-use App\Http\Controllers\Simora\CommitteeController;
-use App\Http\Controllers\Simora\DocumentationController;
-use App\Http\Controllers\Simora\EvaluationController;
-use App\Http\Controllers\Simora\ArchiveController;
-use App\Http\Controllers\Simora\MemberController;
 use App\Http\Controllers\Simora\PositionController;
+use App\Http\Controllers\Simora\RealizationController;
 use App\Http\Controllers\Simora\SentraController;
 use App\Http\Controllers\Simora\WorkProgramController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'role:developer,organization'])->prefix('simora')->na
     Route::delete('/orgmate/struktur/{position}', [PositionController::class, 'destroy'])->middleware('role:organization')->name('orgmate.struktur.destroy');
     Route::get('/orgmate/arsip', [OrgmateController::class, 'arsip'])->name('orgmate.arsip');
     Route::get('/orgmate/pengumuman', [OrgmateController::class, 'pengumuman'])->name('orgmate.pengumuman');
+    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->middleware('role:developer')->name('mahasiswa');
     Route::get('/e-progress', [EProgressController::class, 'dashboard'])->name('e-progress');
     Route::get('/e-progress/panduan', [EProgressController::class, 'panduan'])->name('e-progress.panduan');
     Route::get('/e-progress/proker', [WorkProgramController::class, 'index'])->name('e-progress.proker');
@@ -105,6 +107,11 @@ Route::middleware(['auth', 'role:developer,organization'])->prefix('simora')->na
     Route::put('/sentra/iuran/{due}', [DuesController::class, 'update'])->middleware('role:organization')->name('sentra.iuran.update');
     Route::delete('/sentra/iuran/{due}', [DuesController::class, 'destroy'])->middleware('role:organization')->name('sentra.iuran.destroy');
     Route::put('/sentra/iuran/{due}/lunas', [DuesController::class, 'markPaid'])->middleware('role:organization')->name('sentra.iuran.markPaid');
+    Route::get('/sentra/iuran/{due}/unduh', [DuesController::class, 'download'])->name('sentra.iuran.download');
+    Route::get('/sentra/kas/{cashTransaction}/unduh', [CashTransactionController::class, 'download'])->name('sentra.kas.download');
+    Route::get('/sentra/realisasi/{cashTransaction}/unduh', [RealizationController::class, 'download'])->name('sentra.realisasi.download');
+    Route::get('/orgmate/arsip/{archive}/unduh', [ArchiveController::class, 'download'])->name('orgmate.arsip.download');
+    Route::get('/e-progress/dokumentasi/{documentation}/unduh', [DocumentationController::class, 'download'])->name('e-progress.dokumentasi.download');
     Route::get('/sentra/realisasi', [SentraController::class, 'realisasi'])->name('sentra.realisasi');
     Route::post('/sentra/realisasi', [RealizationController::class, 'store'])->middleware('role:organization')->name('sentra.realisasi.store');
     Route::get('/sentra/laporan', [SentraController::class, 'laporan'])->name('sentra.laporan');
@@ -150,10 +157,10 @@ Route::put('/simora/kelola-landing', [LandingManagementController::class, 'updat
     ->middleware(['auth', 'role:developer'])
     ->name('simora.landing-management.update');
 
-// Presensi publik via QR code (signed URL, tanpa login — peserta hanya scan & isi nama)
+// Presensi publik via QR code (temporary signed URL 5 menit, tanpa login — peserta hanya scan & isi nama)
 Route::get('/presensi/{activity}', [AttendanceController::class, 'checkin'])
-    ->middleware('signed')
+    ->middleware(['signed', 'throttle:5,1'])
     ->name('presensi.checkin');
 Route::post('/presensi/{activity}', [AttendanceController::class, 'checkinStore'])
-    ->middleware('signed')
+    ->middleware(['signed', 'throttle:5,1'])
     ->name('presensi.checkin.store');

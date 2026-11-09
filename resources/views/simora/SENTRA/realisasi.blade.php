@@ -8,7 +8,7 @@
         </div>
         @if(($isDeveloper ?? false) && ($organizationsList ?? collect())->count() > 0)
             <form method="GET" action="{{ route('simora.sentra.realisasi') }}" class="sentra-periode">
-                <i data-lucide="building-2"></i><label>Organisasi:</label>
+                <i data-lucide="building-2" class="icon"></i><label>Organisasi:</label>
                 <select name="organization" onchange="this.form.submit()">
                     <option value="">Semua Organisasi</option>
                     @foreach ($organizationsList as $org)
@@ -19,7 +19,7 @@
             </form>
         @endif
         <form method="GET" action="{{ route('simora.sentra.realisasi') }}" class="sentra-periode">
-            <i data-lucide="calendar-days"></i><label>Periode:</label>
+            <i data-lucide="calendar-days" class="icon"></i><label>Periode:</label>
             <select name="periode" onchange="this.form.submit()">
                 @for($y = max(2025, (int) now()->format('Y') - 1); $y <= (int) now()->format('Y') + 2; $y++)
                     <option value="{{ $y }}" {{ $year === $y ? 'selected' : '' }}>{{ $y }}</option>
@@ -34,23 +34,23 @@
     @endif
 
     <div class="sentra-summary-grid">
-        <article class="sentra-stat sentra-stat--blue"><span class="sentra-stat-icon"><i data-lucide="calculator"></i></span>
+        <article class="sentra-stat sentra-stat--blue"><span class="sentra-stat-icon"><i data-lucide="calculator" class="icon"></i></span>
             <div><span>Total Anggaran</span><strong>Rp{{ number_format($totalAnggaran, 0, ',', '.') }}</strong><small>Periode {{ $year }}</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--green"><span class="sentra-stat-icon"><i data-lucide="wallet"></i></span>
+        <article class="sentra-stat sentra-stat--green"><span class="sentra-stat-icon"><i data-lucide="wallet" class="icon"></i></span>
             <div><span>Total Realisasi</span><strong>Rp{{ number_format($totalRealisasi, 0, ',', '.') }}</strong><small>Sudah terpakai {{ $averagePercent }}%</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--red"><span class="sentra-stat-icon"><i data-lucide="arrow-down-circle"></i></span>
+        <article class="sentra-stat sentra-stat--red"><span class="sentra-stat-icon"><i data-lucide="circle-arrow-down" class="icon"></i></span>
             <div><span>Sisa Anggaran</span><strong>Rp{{ number_format($totalAnggaran - $totalRealisasi, 0, ',', '.') }}</strong><small>Belum terpakai</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--purple"><span class="sentra-stat-icon"><i data-lucide="receipt-text"></i></span>
+        <article class="sentra-stat sentra-stat--purple"><span class="sentra-stat-icon"><i data-lucide="receipt-text" class="icon"></i></span>
             <div><span>Dokumen LPJ</span><strong>{{ $lpjs->count() }}</strong><small>Terhubung dari E-Progress</small></div>
         </article>
     </div>
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="bar-chart-3"></i> Grafik Realisasi per Proker</h2><span class="badge gray">Tahun {{ $year }}</span>
+            <h2><i data-lucide="chart-column" class="icon"></i> Grafik Realisasi per Proker</h2><span class="badge gray">Tahun {{ $year }}</span>
         </div>
         @if ($budgets->isEmpty())
             <div class="orgmate-empty">Belum ada data realisasi anggaran. Grafik akan terisi setelah anggaran dan pengeluaran tercatat.</div>
@@ -60,7 +60,7 @@
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="receipt-text"></i> Rincian Realisasi</h2><a href="{{ route('simora.sentra.rab', ['periode' => $year]) }}">Lihat RAB <i data-lucide="arrow-right"></i></a>
+            <h2><i data-lucide="receipt-text" class="icon"></i> Rincian Realisasi</h2><a href="{{ route('simora.sentra.rab', ['periode' => $year]) }}">Lihat RAB <i data-lucide="arrow-right" class="icon"></i></a>
         </div>
         @if ($budgets->isEmpty())
             <div class="orgmate-empty">Belum ada rincian realisasi anggaran.</div>
@@ -101,7 +101,7 @@
                                 </td>
                                 @if(auth()->user()->role !== 'developer')
                                     <td>
-                                        <button type="button" class="orgmate-btn ghost orgmate-btn-sm" data-edit-open data-dialog="addReal-{{ $budget->id }}"><i data-lucide="plus"></i> Catat</button>
+                                        <button type="button" class="orgmate-btn ghost orgmate-btn-sm" data-edit-open data-dialog="addReal-{{ $budget->id }}"><i data-lucide="plus" class="icon"></i> Catat</button>
                                     </td>
                                 @endif
                             </tr>
@@ -115,12 +115,12 @@
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="file-text"></i> Dokumen LPJ dari E-Progress</h2>
-            <a href="{{ route('simora.e-progress.evaluasi') }}">Buka Evaluasi &amp; LPJ <i data-lucide="arrow-right"></i></a>
+            <h2><i data-lucide="file-text" class="icon"></i> Dokumen LPJ dari E-Progress</h2>
+            <a href="{{ route('simora.e-progress.evaluasi') }}">Buka Evaluasi &amp; LPJ <i data-lucide="arrow-right" class="icon"></i></a>
         </div>
         @forelse ($lpjs as $lpj)
             <div class="orgmate-post">
-                <span class="orgmate-post-icon"><i data-lucide="file-text"></i></span>
+                <span class="orgmate-post-icon"><i data-lucide="file-text" class="icon"></i></span>
                 <div style="flex:1;min-width:0">
                     <h3>{{ $lpj->title }}</h3>
                     <p>{{ \Illuminate\Support\Str::limit($lpj->content ?: 'Tanpa isi.', 140) }}</p>
@@ -142,7 +142,7 @@
         @foreach ($budgets as $budget)
             <dialog class="orgmate-dialog" id="addReal-{{ $budget->id }}" aria-labelledby="addRealTitle-{{ $budget->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="addRealTitle-{{ $budget->id }}">Catat Realisasi — {{ $budget->program_name }}</h2>
                 <form method="POST" action="{{ route('simora.sentra.realisasi.store') }}" enctype="multipart/form-data">
@@ -173,6 +173,7 @@
                 </form>
             </dialog>
         @endforeach
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
         <script>
             document.querySelectorAll('[data-edit-open]').forEach((button) => {
                 button.addEventListener('click', () => {
@@ -186,7 +187,7 @@
             document.querySelectorAll('.orgmate-dialog').forEach((dialog) => {
                 dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
             });
-            (function () {
+            document.addEventListener('DOMContentLoaded', function () {
                 const canvas = document.getElementById('chartRealisasi');
                 if (!canvas || !window.Chart) return;
                 const labels = @json($budgets->pluck('program_name'));
@@ -204,7 +205,7 @@
                     },
                     options: { responsive: true, plugins: { legend: { position: 'bottom' } } },
                 });
-            })();
+            });
         </script>
         @include('partials.camera-capture')
     @endif

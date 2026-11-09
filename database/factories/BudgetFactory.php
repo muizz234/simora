@@ -21,7 +21,7 @@ class BudgetFactory extends Factory
         return [
             'organization_id' => Organization::factory(),
             'work_program_id' => null,
-            'program_name' => fake()->randomElement(['Program Kerja Tahunan', 'Rapat Kerja', 'Pelatihan Kepemimpinan', 'Bakti Sosial', 'Seminar Teknologi']), 
+            'program_name' => fake()->randomElement(['Program Kerja Tahunan', 'Rapat Kerja', 'Pelatihan Kepemimpinan', 'Bakti Sosial', 'Seminar Teknologi']),
             'year' => (int) now()->format('Y'),
             'allocated' => fake()->randomFloat(2, 500000, 10000000),
             'realized' => 0,

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.seo-head')
     <meta name="theme-color" content="#f5f8ff">
     <title>{{ $activity->name }} | Kegiatan Fakultas Teknik UNUJA</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/Logo FT.png') }}">
@@ -13,9 +14,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/landing.css?v=3">
-    <script src="/assets/js/landing.js?v=2" defer></script>
-    <script src="/assets/js/clock.js" defer></script>
+    @vite(['resources/css/landing/landing.css', 'resources/js/landing/landing.js', 'resources/js/clock.js'])
 </head>
 
 <body>

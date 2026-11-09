@@ -16,7 +16,7 @@ class CashTransactionTest extends TestCase
 
     public function test_organization_can_add_income_and_expense_and_balance_is_computed(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
         $organization = Organization::factory()->create();
         $account = User::factory()->create([
             'role' => User::ROLE_ORGANIZATION,
@@ -51,7 +51,7 @@ class CashTransactionTest extends TestCase
         ]);
 
         $stored = CashTransaction::where('organization_id', $organization->id)->firstOrFail();
-        Storage::disk('public')->assertExists($stored->proof_path);
+        Storage::disk('local')->assertExists($stored->proof_path);
 
         $this->actingAs($account)
             ->get(route('simora.sentra.kas'))
@@ -66,7 +66,7 @@ class CashTransactionTest extends TestCase
 
     public function test_proof_is_required_for_cash_transactions(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
         $organization = Organization::factory()->create();
         $account = User::factory()->create([
             'role' => User::ROLE_ORGANIZATION,

@@ -21,7 +21,7 @@ class WorkProgramFactory extends Factory
         return [
             'organization_id' => Organization::factory(),
             'created_by' => null,
-            'name' => fake()->randomElement(['Program Kerja Tahunan', 'Rapat Kerja', 'Pelatihan Kepemimpinan', 'Bakti Sosial', 'Seminar Teknologi']), 
+            'name' => fake()->randomElement(['Program Kerja Tahunan', 'Rapat Kerja', 'Pelatihan Kepemimpinan', 'Bakti Sosial', 'Seminar Teknologi']),
             'description' => fake()->optional()->sentence(),
             'status' => fake()->randomElement(['perencanaan', 'pelaksanaan', 'evaluasi', 'pelaporan', 'selesai']),
             'start_date' => fake()->date(),

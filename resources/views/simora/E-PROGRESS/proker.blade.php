@@ -76,7 +76,7 @@
     @if (!($isDeveloper ?? false))
         <section class="orgmate-card" aria-label="Tambah program kerja">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus"></i> Tambah Program Kerja</h2>
+                <h2><i data-lucide="plus" class="icon"></i> Tambah Program Kerja</h2>
             </div>
             <form method="POST" action="{{ route('simora.e-progress.proker.store') }}" class="orgmate-form">
                 @csrf
@@ -113,7 +113,7 @@
         @foreach ($workPrograms as $program)
             <dialog class="orgmate-dialog" id="editProgram-{{ $program->id }}" aria-labelledby="editProgramTitle-{{ $program->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editProgramTitle-{{ $program->id }}">Edit Program Kerja</h2>
                 <form method="POST" action="{{ route('simora.e-progress.proker.update', $program) }}">

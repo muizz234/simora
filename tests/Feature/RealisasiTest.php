@@ -21,7 +21,7 @@ class RealisasiTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Storage::fake('public');
+        Storage::fake('local');
     }
 
     public function test_recording_realization_increases_budget_and_cash_expense(): void

@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.seo-head')
     <meta name="theme-color" content="#f5f7fb">
     <title>{{ $moduleName }} | {{ auth()->user()->role === 'organization' ? 'SIMORA Aplikasi' : 'SIMORA Workspace' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/SIMORA.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <link rel="stylesheet" href="/assets/css/panel.css?v=5">
-    <link rel="stylesheet" href="/assets/css/module.css?v=2">
+    @vite(['resources/css/simora/panel/panel.css', 'resources/css/simora/module/module.css'])
 </head>
 <body class="panel-page module-page" style="--module-color: {{ $moduleColor }}">
     <x-panel-header :module-name="$moduleName" :module-number="$moduleNumber" />

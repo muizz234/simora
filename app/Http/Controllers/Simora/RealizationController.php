@@ -8,6 +8,8 @@ use App\Models\CashTransaction;
 use App\Support\OrganizationScope;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class RealizationController extends Controller
 {
@@ -28,22 +30,33 @@ class RealizationController extends Controller
         $budget = Budget::findOrFail($data['budget_id']);
         OrganizationScope::assertCanAccessOrganization($request->user(), $budget->organization_id);
 
-        $amount = (float) $data['amount'];
-        $proofPath = $request->file('proof')->storePublicly('bukti-realisasi', 'public');
+        $amount = $data['amount'];
+        $proofPath = $request->file('proof')->store('bukti-realisasi', 'local');
 
-        CashTransaction::create([
-            'organization_id' => $organization->id,
-            'type' => CashTransaction::TYPE_EXPENSE,
-            'title' => $data['description'] ?? 'Realisasi '.$budget->program_name,
-            'amount' => $amount,
-            'date' => $data['date'],
-            'category' => 'Realisasi Anggaran',
-            'proof_path' => $proofPath,
-        ]);
+        DB::transaction(function () use ($organization, $budget, $data, $amount, $proofPath) {
+            CashTransaction::create([
+                'organization_id' => $organization->id,
+                'type' => CashTransaction::TYPE_EXPENSE,
+                'title' => $data['description'] ?? 'Realisasi '.$budget->program_name,
+                'amount' => $amount,
+                'date' => $data['date'],
+                'category' => 'Realisasi Anggaran',
+                'proof_path' => $proofPath,
+            ]);
 
-        $budget->increment('realized', $amount);
+            $budget->increment('realized', $amount);
+        });
 
         return redirect()->route('simora.sentra.realisasi', ['periode' => $budget->year])
-            ->with('status', 'Realisasi Rp'.number_format($amount, 0, ',', '.').' tercatat di Kas dan RAB.');
+            ->with('status', 'Realisasi Rp'.number_format((float) $amount, 0, ',', '.').' tercatat di Kas dan RAB.');
+    }
+
+    public function download(Request $request, CashTransaction $cashTransaction)
+    {
+        OrganizationScope::assertCanAccessOrganization($request->user(), $cashTransaction->organization_id);
+
+        abort_if($cashTransaction->proof_path === null || ! Storage::disk('local')->exists($cashTransaction->proof_path), 404);
+
+        return Storage::disk('local')->response($cashTransaction->proof_path);
     }
 }

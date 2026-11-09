@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Simora;
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\Archive;
+use App\Models\Mahasiswa;
 use App\Models\Member;
 use App\Models\Organization;
 use App\Models\Position;
@@ -157,7 +158,15 @@ class OrgmateController extends Controller
             ? Member::where('organization_id', $request->user()->organization_id)->orderBy('name')->get(['id', 'name'])
             : collect();
 
-        return view('simora.ORGMATE.struktur', array_merge($context, compact('positions', 'members')));
+        // Dropdown pemegang jabatan: mahasiswa SSO SESUAI PRODI organisasi ini,
+        // dikelompokkan per angkatan (tahun masuk) + dicari via nama/NIM di UI.
+        // Pemegang tetap disimpan sebagai member (positions.member_id) lewat auto-create.
+        $myOrganization = $request->user()->organization;
+        $prodiLabel = $request->user()->role === 'organization' ? ($myOrganization?->focus ?? '') : '';
+
+        [$mahasiswaByAngkatan, $angkatanOptions] = $this->mahasiswaCandidates($prodiLabel);
+
+        return view('simora.ORGMATE.struktur', array_merge($context, compact('positions', 'members', 'mahasiswaByAngkatan', 'angkatanOptions', 'prodiLabel')));
     }
 
     public function anggota(Request $request): View
@@ -192,7 +201,14 @@ class OrgmateController extends Controller
             ->unique()
             ->values();
 
-        return view('simora.ORGMATE.anggota', array_merge($this->organizationContext($request), compact('members', 'search', 'divisionOptions')));
+        // Dropdown tambah anggota: mahasiswa SESUAI PRODI organisasi ini,
+        // dikelompokkan per angkatan + dicari via nama/NIM.
+        $myOrganization = $request->user()->organization;
+        $prodiLabel = $request->user()->role === 'organization' ? ($myOrganization?->focus ?? '') : '';
+
+        [$mahasiswaByAngkatan, $angkatanOptions] = $this->mahasiswaCandidates($prodiLabel);
+
+        return view('simora.ORGMATE.anggota', array_merge($this->organizationContext($request), compact('members', 'search', 'divisionOptions', 'mahasiswaByAngkatan', 'angkatanOptions', 'prodiLabel')));
     }
 
     public function rekrutmen(Request $request): View
@@ -282,12 +298,49 @@ class OrgmateController extends Controller
     private function guideData(): array
     {
         return [
-            ['icon' => 'network', 'title' => 'Struktur Kepengurusan', 'desc' => 'Atur jabatan dan siapa pemegangnya.', 'steps' => ['Buka menu Struktur Kepengurusan → Tambah Jabatan (mis. Ketua Umum, Koordinator Divisi).', 'Pilih kelompok jabatan: Pimpinan, Wakil Pimpinan, BPI, atau Divisi.', 'Tunjuk pemegang dari daftar anggota (satu jabatan, satu pemegang).', 'Perubahan tampil otomatis pada bagan struktural di landing publik.']],
-            ['icon' => 'users', 'title' => 'Data Anggota', 'desc' => 'Kelola data mahasiswa anggota organisasi.', 'steps' => ['Tambah anggota lewat form: nama, NIM (unik per organisasi), divisi, status.', 'Unggah foto anggota bila ada.', 'Cari anggota lewat kotak pencarian dan ubah lewat tombol Edit.', 'Gunakan pagination (5–50 per halaman) untuk daftar panjang.']],
+            ['icon' => 'network', 'title' => 'Struktur Kepengurusan', 'desc' => 'Atur jabatan dan siapa pemegangnya.', 'steps' => ['Buka menu Struktur Kepengurusan → Tambah Jabatan (mis. Ketua Umum, Koordinator Divisi).', 'Pilih kelompok jabatan: Pimpinan, Wakil Pimpinan, BPI, atau Divisi.', 'Tunjuk pemegang dari daftar mahasiswa SESUAI PRODI organisasi Anda, dikelompokkan per angkatan. Saring dengan kolom pencarian (nama/NIM) atau filter angkatan agar cepat, lalu pilih nama di dropdown.', 'Satu jabatan, satu pemegang. Perwakilan otomatis menjadi data anggota untuk bagan struktural di landing publik.']],
+            ['icon' => 'users', 'title' => 'Data Anggota', 'desc' => 'Kelola data mahasiswa anggota organisasi.', 'steps' => ['Tambah anggota lewat form: pilih mahasiswa SESUAI PRODI organisasi Anda dari dropdown (dikelompokkan per angkatan). Saring dengan kolom pencarian (nama/NIM) atau filter angkatan. NIM terisi otomatis.', 'Pilih divisi dan unggah foto anggota bila ada.', 'Cari anggota lewat kotak pencarian dan ubah lewat tombol Edit.', 'Gunakan pagination (5–50 per halaman) untuk daftar panjang.']],
             ['icon' => 'folder-open', 'title' => 'Arsip SK & Surat', 'desc' => 'Simpan dokumen SK dan surat dalam satu tempat.', 'steps' => ['Tambah arsip: judul, kategori, dan file (PDF/gambar/dokumen).', 'File tersimpan aman dan bisa dibuka/diunduh kembali.', 'Hitungan kartu menampilkan jumlah arsip per kategori.']],
             ['icon' => 'megaphone', 'title' => 'Pengumuman', 'desc' => 'Sampaikan informasi penting ke anggota.', 'steps' => ['Tulis pengumuman: judul dan isi.', 'Pengumuman terbaru tampil di dashboard organisasi.', 'Edit atau hapus pengumuman lama bila sudah tidak relevan.']],
             ['icon' => 'user-plus', 'title' => 'Rekrutmen Anggota', 'desc' => 'Kelola open recruitment dan calon anggota.', 'steps' => ['Buka menu Rekrutmen Anggota untuk melihat calon.', 'Tautkan link pendaftaran organisasi di panel SIMORA agar tampil di landing.', 'Calon yang diterima bisa ditambahkan sebagai anggota lewat Data Anggota.']],
         ];
+    }
+
+    /**
+     * Kandidat mahasiswa untuk dropdown organisasi per prodi + per angkatan.
+     * Bergantung pada fokus organisasi: hanya prodi itu yang ditampilkan.
+     *
+     * @return array{0: Collection<string, Collection<int, Mahasiswa>>, 1: Collection<int, string>}}
+     */
+    private function mahasiswaCandidates(string $prodiLabel): array
+    {
+        if ($prodiLabel === '') {
+            return [collect(), collect()];
+        }
+
+        $candidates = Mahasiswa::query()
+            ->where('study_program', $prodiLabel)
+            ->orderByDesc('enrollment_year')
+            ->orderBy('name')
+            ->get(['id', 'nim', 'name', 'faculty', 'study_program', 'enrollment_year']);
+
+        $grouped = $candidates->groupBy(fn ($m) => $this->angkatanLabel($m->enrollment_year));
+
+        return [$grouped, $grouped->keys()->values()];
+    }
+
+    /**
+     * Label angkatan dari enrollment_year SSO (format "YYYY1" -> "Angkatan YYYY").
+     */
+    private function angkatanLabel(?string $enrollmentYear): string
+    {
+        if ($enrollmentYear === null || trim($enrollmentYear) === '') {
+            return 'Tanpa Angkatan';
+        }
+
+        $year = substr(trim($enrollmentYear), 0, 4);
+
+        return preg_match('/^\d{4}$/', $year) === 1 ? "Angkatan {$year}" : "Angkatan {$enrollmentYear}";
     }
 
     private function greeting(): string

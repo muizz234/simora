@@ -23,10 +23,7 @@ class Documentation extends Model
             return null;
         }
 
-        $url = Storage::disk('public')->url($this->file_path);
-        $mtime = @filemtime(Storage::disk('public')->path($this->file_path));
-
-        return $url.($mtime ? '?v='.$mtime : '');
+        return Storage::disk('public')->url($this->file_path);
     }
 
     public function getIsImageAttribute(): bool

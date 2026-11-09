@@ -26,6 +26,7 @@ class Dues extends Model
     {
         return [
             'paid_at' => 'datetime',
+            'amount' => 'decimal:2',
         ];
     }
 
@@ -45,9 +46,10 @@ class Dues extends Model
             return null;
         }
 
-        $url = Storage::disk('public')->url($this->proof_path);
-        $mtime = @filemtime(Storage::disk('public')->path($this->proof_path));
+        if (! Storage::disk('local')->exists($this->proof_path)) {
+            return null;
+        }
 
-        return $url.($mtime ? '?v='.$mtime : '');
+        return route('simora.sentra.iuran.download', $this);
     }
 }

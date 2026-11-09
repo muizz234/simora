@@ -79,6 +79,15 @@ class DocumentationController extends Controller
             ->with('status', 'Dokumentasi berhasil dihapus.');
     }
 
+    public function download(Request $request, Documentation $documentation)
+    {
+        OrganizationScope::assertCanAccessOrganization($request->user(), $documentation->organization_id);
+
+        abort_if($documentation->file_path === null || ! Storage::disk('public')->exists($documentation->file_path), 404);
+
+        return Storage::disk('public')->response($documentation->file_path);
+    }
+
     private function deleteUploadedFile(?string $path): void
     {
         if ($path !== null && str_starts_with($path, 'documentation/')) {

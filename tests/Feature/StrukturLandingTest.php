@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Member;
 use App\Models\Organization;
 use App\Models\Position;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

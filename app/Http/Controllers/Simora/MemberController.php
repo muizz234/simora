@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Simora;
 
 use App\Http\Controllers\Controller;
+use App\Models\Mahasiswa;
 use App\Models\Member;
 use App\Support\OrganizationScope;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +19,17 @@ class MemberController extends Controller
 
         abort_if($organization === null, 403, 'Akun ini belum terhubung ke organisasi.');
 
-        $data = $this->normalize($request->validate($this->rules()));
+        $fromMahasiswa = $request->filled('mahasiswa_id');
+        $data = $this->normalize($request->validate($this->rules(null, $fromMahasiswa)));
+        unset($data['mahasiswa_id']);
+
+        if ($fromMahasiswa) {
+            $mahasiswa = Mahasiswa::query()->findOrFail($request->input('mahasiswa_id'));
+            $data['name'] = $mahasiswa->name;
+            $data['nim'] = $mahasiswa->nim;
+            $data['faculty'] = $mahasiswa->faculty;
+            $data['study_program'] = $mahasiswa->study_program;
+        }
 
         if ($request->hasFile('avatar')) {
             $data['avatar_path'] = $request->file('avatar')->storePublicly('avatars', 'public');
@@ -81,10 +92,25 @@ class MemberController extends Controller
     /**
      * @return array<string, mixed>
      */
-    private function rules(?Member $member = null): array
+    private function rules(?Member $member = null, bool $fromMahasiswa = false): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'mahasiswa_id' => $member !== null ? ['nullable'] : [
+                'nullable',
+                'integer',
+                'exists:mahasiswas,id',
+                function (string $attribute, mixed $value, \Closure $fail) {
+                    if ($value !== null) {
+                        $mahasiswa = Mahasiswa::find($value);
+                        $focus = trim((string) (auth()->user()?->organization?->focus ?? ''));
+
+                        if ($mahasiswa !== null && $focus !== '' && strtolower((string) $mahasiswa->study_program) !== strtolower($focus)) {
+                            $fail('Mahasiswa harus dari prodi organisasi Anda.');
+                        }
+                    }
+                },
+            ],
+            'name' => [$fromMahasiswa ? 'nullable' : 'required', 'string', 'max:255'],
             'nim' => [
                 'nullable',
                 'string',
@@ -94,6 +120,7 @@ class MemberController extends Controller
             'email' => ['nullable', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:30'],
             'faculty' => ['nullable', 'string', 'max:120'],
+            'study_program' => ['nullable', 'string', 'max:120'],
             'division' => ['nullable', 'string', 'max:120'],
             'status' => ['nullable', Rule::in([Member::STATUS_ACTIVE, Member::STATUS_INACTIVE])],
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

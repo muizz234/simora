@@ -22,7 +22,7 @@ class ActivityFactory extends Factory
             'organization_id' => Organization::factory(),
             'work_program_id' => null,
             'created_by' => null,
-            'name' => fake()->randomElement(['Rapat Internal', 'Pelatihan', 'Seminar', 'Workshop', 'Kunjungan Industri']), 
+            'name' => fake()->randomElement(['Rapat Internal', 'Pelatihan', 'Seminar', 'Workshop', 'Kunjungan Industri']),
             'description' => fake()->optional()->sentence(),
             'location' => fake()->optional()->city(),
             'start_at' => fake()->dateTimeBetween('-1 month', '+1 month'),

@@ -43,9 +43,12 @@ class PanelNavbarTest extends TestCase
             ->assertOk()
             ->assertSee('class="selected" href="'.route('simora.accounts.index').'"', false);
 
+        // ORGMATE kini memakai sidebar sendiri (kelas is-active), bukan
+        // navbar panel dengan class "selected" — assert struktural.
         $this->get(route('simora.orgmate'))
             ->assertOk()
-            ->assertSee('class="selected" href="'.route('panel').'#workspace"', false);
+            ->assertSee('Dashboard Organisasi')
+            ->assertSee('orgmate-nav', false);
 
         $this->get(route('simora.kalender-kerja'))->assertForbidden();
     }

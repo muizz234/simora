@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-#[Fillable(['organization_id', 'user_id', 'name', 'nim', 'email', 'phone', 'faculty', 'division', 'status', 'avatar_path'])]
+#[Fillable(['organization_id', 'user_id', 'name', 'nim', 'email', 'phone', 'faculty', 'study_program', 'division', 'status', 'avatar_path'])]
 class Member extends Model
 {
     /** @use HasFactory<MemberFactory> */

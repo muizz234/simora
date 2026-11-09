@@ -24,9 +24,9 @@
     </div>
 
     <div class="eprogress-stats eprogress-stats-3">
-        <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="layers"></i></span><div><span>Total Proker</span><strong>{{ $stats['totalProker'] }}</strong><small>Program kerja terdaftar</small></div></article>
-        <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="gauge"></i></span><div><span>Rata-rata Progres</span><strong>{{ $stats['rataRata'] }}%</strong><small>Kegiatan selesai / total kegiatan</small></div></article>
-        <article class="eprogress-stat eprogress-stat--pastel-amber"><span class="eprogress-stat-icon"><i data-lucide="flag"></i></span><div><span>Proker 100% &amp; Belum Ada Kegiatan</span><strong>{{ $stats['selesai'] }} / {{ $stats['belumMulai'] }}</strong><small>Selesai penuh / belum berjalan</small></div></article>
+        <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="layers" class="icon"></i></span><div><span>Total Proker</span><strong>{{ $stats['totalProker'] }}</strong><small>Program kerja terdaftar</small></div></article>
+        <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="gauge" class="icon"></i></span><div><span>Rata-rata Progres</span><strong>{{ $stats['rataRata'] }}%</strong><small>Kegiatan selesai / total kegiatan</small></div></article>
+        <article class="eprogress-stat eprogress-stat--pastel-amber"><span class="eprogress-stat-icon"><i data-lucide="flag" class="icon"></i></span><div><span>Proker 100% &amp; Belum Ada Kegiatan</span><strong>{{ $stats['selesai'] }} / {{ $stats['belumMulai'] }}</strong><small>Selesai penuh / belum berjalan</small></div></article>
     </div>
 
     @if ($summaries->isEmpty())
@@ -36,7 +36,7 @@
     @else
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="bar-chart-3"></i> Progres per Program Kerja</h2>
+                <h2><i data-lucide="chart-column" class="icon"></i> Progres per Program Kerja</h2>
                 <span class="badge gray">{{ $summaries->count() }} proker</span>
             </div>
             <div class="orgmate-table-wrap">

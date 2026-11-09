@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class ContactTest extends TestCase
@@ -78,7 +79,7 @@ class ContactTest extends TestCase
             'tiktok_url' => 'https://tiktok.com/@uji',
             'youtube_url' => 'https://youtube.com/@uji',
             'whatsapp_url' => 'https://wa.me/6280000000000',
-            'logo' => \Illuminate\Http\UploadedFile::fake()->image('logo.png'),
+            'logo' => UploadedFile::fake()->image('logo.png'),
         ])->assertRedirect(route('simora.organizations.index'));
 
         $this->assertDatabaseHas('organizations', [

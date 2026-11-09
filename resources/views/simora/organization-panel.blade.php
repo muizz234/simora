@@ -3,13 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.seo-head')
     <meta name="theme-color" content="#f5f7fb">
     <title>Dashboard Organisasi | SIMORA</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/SIMORA.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <link rel="stylesheet" href="/assets/css/panel.css?v=5">
-    <link rel="stylesheet" href="/assets/css/organization-panel.css?v=3">
-    <script src="/assets/js/clock.js" defer></script>
+    @vite(['resources/css/simora/panel/panel.css', 'resources/css/simora/organization-panel/organization-panel.css', 'resources/js/clock.js'])
 </head>
 <body class="panel-page">
     <x-panel-header active="dashboard" />

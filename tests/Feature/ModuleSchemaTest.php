@@ -27,6 +27,9 @@ class ModuleSchemaTest extends TestCase
         $this->assertSame(2, $organization->cashTransactions()->count());
         $this->assertSame(1, $organization->budgets()->count());
         $this->assertSame(1, $organization->dues()->count());
+        // Modul inventaris/aset telah dihapus (migrasi 2026_11_08_072232);
+        // relasi inventories()/assetLoans() di Organization masih menunjuk
+        // model yang sudah tidak ada — dilaporkan ke orchestrator/@backend.
     }
 
     public function test_budget_is_linked_to_eprogress_work_program(): void

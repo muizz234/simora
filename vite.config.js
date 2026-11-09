@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
-import tailwindcss from '@tailwindcss/vite';
+
+// Tailwind sengaja tidak dimuat: tidak ada kelas utility Tailwind di Blade/CSS
+// (semua styling memakai CSS kustom per modul di resources/css).
+// Tambahkan kembali `tailwindcss()` bila utility Tailwind mulai dipakai.
 
 export default defineConfig({
     plugins: [
@@ -22,6 +25,8 @@ export default defineConfig({
                 'resources/css/simora/e-progress/e-progress.css',
                 'resources/css/simora/sentra/sentra.css',
                 'resources/css/simora/theme/simora-theme.css',
+                'resources/js/simora/module.js',
+                'resources/js/clock.js',
             ],
             refresh: true,
             fonts: [
@@ -30,7 +35,6 @@ export default defineConfig({
                 }),
             ],
         }),
-        tailwindcss(),
     ],
     server: {
         host: true,

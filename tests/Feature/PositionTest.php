@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Mahasiswa;
 use App\Models\Member;
 use App\Models\Organization;
 use App\Models\Position;
@@ -83,6 +84,63 @@ class PositionTest extends TestCase
         $this->actingAs($developer)
             ->post(route('simora.orgmate.struktur.store'), ['name' => 'Jabatan Bala'])
             ->assertForbidden();
+    }
+
+    public function test_organization_can_pick_holder_by_mahasiswa_id_of_own_prodi_grouped_by_angkatan(): void
+    {
+        $organization = Organization::factory()->create(['name' => 'HIMA-TI', 'focus' => 'Teknologi Informasi']);
+        $account = User::factory()->create([
+            'role' => User::ROLE_ORGANIZATION,
+            'organization_id' => $organization->id,
+        ]);
+        $mahasiswa = Mahasiswa::factory()->create([
+            'nim' => '2301010001',
+            'name' => 'Budi Santoso',
+            'study_program' => 'Teknologi Informasi',
+            'enrollment_year' => '20231',
+        ]);
+
+        $this->actingAs($account)
+            ->get(route('simora.orgmate.struktur'))
+            ->assertOk()
+            ->assertSee('Angkatan 2023')
+            ->assertSee('Budi Santoso — 2301010001');
+
+        $this->actingAs($account)
+            ->post(route('simora.orgmate.struktur.store'), [
+                'name' => 'Ketua Umum',
+                'mahasiswa_id' => $mahasiswa->id,
+                'sort_order' => 1,
+            ])
+            ->assertRedirect(route('simora.orgmate.struktur'));
+
+        $position = Position::query()->where('organization_id', $organization->id)->firstOrFail();
+
+        $this->assertNotNull($position->member_id);
+        $this->assertDatabaseHas('members', [
+            'id' => $position->member_id,
+            'organization_id' => $organization->id,
+            'nim' => '2301010001',
+            'name' => 'Budi Santoso',
+            'study_program' => 'Teknologi Informasi',
+        ]);
+    }
+
+    public function test_organization_cannot_pick_mahasiswa_of_another_prodi(): void
+    {
+        $organization = Organization::factory()->create(['focus' => 'Teknologi Informasi']);
+        $account = User::factory()->create([
+            'role' => User::ROLE_ORGANIZATION,
+            'organization_id' => $organization->id,
+        ]);
+        $otherProdi = Mahasiswa::factory()->create(['study_program' => 'Teknik Informatika']);
+
+        $this->actingAs($account)
+            ->post(route('simora.orgmate.struktur.store'), [
+                'name' => 'Ketua Umum',
+                'mahasiswa_id' => $otherProdi->id,
+            ])
+            ->assertSessionHasErrors('mahasiswa_id');
     }
 
     public function test_holder_must_be_a_member_of_the_same_organization(): void

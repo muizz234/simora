@@ -36,14 +36,14 @@
         </div>
     @else
         <div class="eprogress-stats eprogress-stats-3">
-            <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="folder-open"></i></span><div><span>Total Dokumentasi</span><strong>{{ $stats['totalDokumen'] }}</strong><small>Pada kegiatan terpilih</small></div></article>
-            <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="image"></i></span><div><span>Foto</span><strong>{{ $stats['foto'] }}</strong><small>Galeri kegiatan</small></div></article>
-            <article class="eprogress-stat eprogress-stat--pastel-purple"><span class="eprogress-stat-icon"><i data-lucide="video"></i></span><div><span>Video</span><strong>{{ $stats['video'] }}</strong><small>Rekaman kegiatan</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="folder-open" class="icon"></i></span><div><span>Total Dokumentasi</span><strong>{{ $stats['totalDokumen'] }}</strong><small>Pada kegiatan terpilih</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="image" class="icon"></i></span><div><span>Foto</span><strong>{{ $stats['foto'] }}</strong><small>Galeri kegiatan</small></div></article>
+            <article class="eprogress-stat eprogress-stat--pastel-purple"><span class="eprogress-stat-icon"><i data-lucide="video" class="icon"></i></span><div><span>Video</span><strong>{{ $stats['video'] }}</strong><small>Rekaman kegiatan</small></div></article>
         </div>
 
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="flag"></i> Pilih Kegiatan</h2>
+                <h2><i data-lucide="flag" class="icon"></i> Pilih Kegiatan</h2>
                 <form method="GET" action="{{ route('simora.e-progress.dokumentasi') }}" class="orgmate-org-form orgmate-org-form--inline eprogress-panitia-select">
                     @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
                     <label for="activitySelect">Kegiatan:</label>
@@ -56,7 +56,7 @@
             </div>
             @if ($selectedActivity)
                 <div class="orgmate-post" style="margin-bottom:0">
-                    <span class="orgmate-post-icon"><i data-lucide="calendar-check"></i></span>
+                    <span class="orgmate-post-icon"><i data-lucide="calendar-check" class="icon"></i></span>
                     <div style="flex:1;min-width:0">
                         <h3>{{ $selectedActivity->name }}</h3>
                         <p>{{ $selectedActivity->description ?: ($selectedActivity->location ?: 'Tanpa keterangan tambahan.') }}</p>
@@ -72,7 +72,7 @@
 
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="images"></i> Galeri Dokumentasi</h2>
+                <h2><i data-lucide="images" class="icon"></i> Galeri Dokumentasi</h2>
                 <span class="badge gray">{{ $documentations->count() }} berkas · {{ $documentations->where('type', 'foto')->count() }} foto</span>
             </div>
             @php $galleryPhotos = $documentations->where(fn ($doc) => $doc->is_image); $otherFiles = $documentations->reject(fn ($doc) => $doc->is_image); @endphp
@@ -101,7 +101,7 @@
             @if($otherFiles->isNotEmpty())
                 @foreach ($otherFiles as $documentation)
                     <div class="orgmate-post">
-                        <span class="orgmate-post-icon"><i data-lucide="{{ $documentation->type === 'video' ? 'video' : 'file-text' }}"></i></span>
+                        <span class="orgmate-post-icon"><i data-lucide="{{ $documentation->type === 'video' ? 'video' : 'file-text' }}" class="icon"></i></span>
                         <div style="flex:1;min-width:0">
                             <h3>{{ $documentation->title }}</h3>
                             <p>{{ $documentation->created_at?->locale('id')->translatedFormat('d M Y · H:i') ?? '—' }}</p>
@@ -133,7 +133,7 @@
 
         @if(!($isDeveloper ?? false))
             <section class="orgmate-card" aria-label="Unggah dokumentasi">
-                <div class="orgmate-card-head"><h2><i data-lucide="upload"></i> Unggah Dokumentasi</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="upload" class="icon"></i> Unggah Dokumentasi</h2></div>
                 <form method="POST" action="{{ route('simora.e-progress.dokumentasi.store') }}" class="orgmate-form" enctype="multipart/form-data">
                     @csrf
                     <div class="orgmate-form-grid">
@@ -171,7 +171,7 @@
             @foreach ($documentations as $documentation)
                 <dialog class="orgmate-dialog" id="editDoc-{{ $documentation->id }}" aria-labelledby="editDocTitle-{{ $documentation->id }}">
                     <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                     </form>
                     <h2 class="orgmate-dialog-title" id="editDocTitle-{{ $documentation->id }}">Edit Dokumentasi</h2>
                     <form method="POST" action="{{ route('simora.e-progress.dokumentasi.update', $documentation) }}" enctype="multipart/form-data">

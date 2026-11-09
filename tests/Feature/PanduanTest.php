@@ -19,10 +19,12 @@ class PanduanTest extends TestCase
             'organization_id' => $organization->id,
         ]);
 
+        // Status + identitas modul + route panduan (bukan sekadar judul).
         $this->actingAs($account)
             ->get(route('simora.orgmate.panduan'))
             ->assertOk()
             ->assertSee('Panduan ORGMATE')
+            ->assertSee(route('simora.orgmate.panduan'), false)
             ->assertSee('Struktur Kepengurusan')
             ->assertSee('Data Anggota');
 

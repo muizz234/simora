@@ -1,6 +1,6 @@
 <dialog class="camera-dialog" id="cameraDialog" aria-labelledby="cameraTitle">
     <form method="dialog" class="orgmate-dialog-close-form" value="close">
-        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" aria-hidden="true"></i></button>
     </form>
     <h2 class="orgmate-dialog-title" id="cameraTitle">Ambil Foto Bukti</h2>
     <video class="camera-video" autoplay playsinline></video>

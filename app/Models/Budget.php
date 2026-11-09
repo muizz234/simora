@@ -26,6 +26,18 @@ class Budget extends Model
     }
 
     /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'year' => 'integer',
+            'allocated' => 'decimal:2',
+            'realized' => 'decimal:2',
+        ];
+    }
+
+    /**
      * Persentase realisasi anggaran (0–100).
      *
      * @return Attribute<float, never>
@@ -33,7 +45,7 @@ class Budget extends Model
     protected function percentage(): Attribute
     {
         return Attribute::make(
-            get: fn () => ($this->allocated > 0)
+            get: fn () => ($this->allocated !== null && (float) $this->allocated > 0)
                 ? round(((float) $this->realized / (float) $this->allocated) * 100, 2)
                 : 0.0,
         );

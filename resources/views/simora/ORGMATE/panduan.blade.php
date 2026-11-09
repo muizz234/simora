@@ -17,7 +17,7 @@
     <div class="guide-grid">
         @foreach ($guides as $guide)
             <article class="orgmate-card guide-card">
-                <div class="orgmate-card-head"><h2><i data-lucide="{{ $guide['icon'] }}"></i> {{ $guide['title'] }}</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="{{ $guide['icon'] }}" class="icon"></i> {{ $guide['title'] }}</h2></div>
                 <p class="guide-desc">{{ $guide['desc'] }}</p>
                 <ol class="guide-steps">
                     @foreach ($guide['steps'] as $step)
@@ -29,7 +29,7 @@
     </div>
 
     <div class="orgmate-card guide-tips">
-        <div class="orgmate-card-head"><h2><i data-lucide="lightbulb"></i> Tips Umum</h2></div>
+        <div class="orgmate-card-head"><h2><i data-lucide="lightbulb" class="icon"></i> Tips Umum</h2></div>
         <ul class="guide-tips-list">
             <li>Akun organisasi hanya bisa menulis data organisasinya sendiri; akun developer hanya melihat/memonitor lintas organisasi.</li>
             <li>Anggota adalah data keanggotaan (mahasiswa), bukan akun login — jabatan menunjuk ke anggota.</li>

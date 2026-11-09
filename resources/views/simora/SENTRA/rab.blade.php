@@ -8,7 +8,7 @@
         </div>
         <div class="sentra-head-right">
             <form method="GET" action="{{ route('simora.sentra.rab') }}" class="sentra-periode">
-                <i data-lucide="calendar-days"></i><label>Periode:</label>
+                <i data-lucide="calendar-days" class="icon"></i><label>Periode:</label>
                 <select name="periode" onchange="this.form.submit()">
                     @for($y = max(2025, (int) now()->format('Y') - 1); $y <= (int) now()->format('Y') + 2; $y++)
                         <option value="{{ $y }}" {{ $year === $y ? 'selected' : '' }}>{{ $y }}</option>
@@ -18,7 +18,7 @@
             </form>
             @if(($isDeveloper ?? false) && ($organizationsList ?? collect())->count() > 0)
                 <form method="GET" action="{{ route('simora.sentra.rab') }}" class="sentra-periode">
-                    <i data-lucide="building-2"></i><label>Organisasi:</label>
+                    <i data-lucide="building-2" class="icon"></i><label>Organisasi:</label>
                     <select name="organization" onchange="this.form.submit()">
                         <option value="">Semua Organisasi</option>
                         @foreach ($organizationsList as $org)
@@ -40,23 +40,23 @@
     @endphp
 
     <div class="sentra-summary-grid">
-        <article class="sentra-stat sentra-stat--blue"><span class="sentra-stat-icon"><i data-lucide="clipboard-list"></i></span>
+        <article class="sentra-stat sentra-stat--blue"><span class="sentra-stat-icon"><i data-lucide="clipboard-list" class="icon"></i></span>
             <div><span>Total Anggaran</span><strong>Rp{{ number_format($totalAnggaran, 0, ',', '.') }}</strong><small>Periode {{ $year }}</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--green"><span class="sentra-stat-icon"><i data-lucide="receipt-text"></i></span>
+        <article class="sentra-stat sentra-stat--green"><span class="sentra-stat-icon"><i data-lucide="receipt-text" class="icon"></i></span>
             <div><span>Total Realisasi</span><strong>Rp{{ number_format($totalRealisasi, 0, ',', '.') }}</strong><small>Anggaran yang sudah dipakai</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--purple"><span class="sentra-stat-icon"><i data-lucide="gauge"></i></span>
+        <article class="sentra-stat sentra-stat--purple"><span class="sentra-stat-icon"><i data-lucide="gauge" class="icon"></i></span>
             <div><span>Rata-rata Realisasi</span><strong>{{ $averagePercent }}%</strong><small>Realisasi ÷ Anggaran</small></div>
         </article>
-        <article class="sentra-stat sentra-stat--red"><span class="sentra-stat-icon"><i data-lucide="wallet"></i></span>
+        <article class="sentra-stat sentra-stat--red"><span class="sentra-stat-icon"><i data-lucide="wallet" class="icon"></i></span>
             <div><span>Sisa Anggaran</span><strong>Rp{{ number_format($totalAnggaran - $totalRealisasi, 0, ',', '.') }}</strong><small>Anggaran − Realisasi</small></div>
         </article>
     </div>
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="clipboard-list"></i> Daftar RAB Program Kerja</h2>
+            <h2><i data-lucide="clipboard-list" class="icon"></i> Daftar RAB Program Kerja</h2>
             <span class="badge gray">Total Rp{{ number_format($totalAnggaran, 0, ',', '.') }}</span>
         </div>
         @if ($budgets->isEmpty())
@@ -121,7 +121,7 @@
     @if(auth()->user()->role !== 'developer')
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus-circle"></i> Tambah Anggaran Proker</h2>
+                <h2><i data-lucide="circle-plus" class="icon"></i> Tambah Anggaran Proker</h2>
             </div>
             <form method="POST" action="{{ route('simora.sentra.rab.store') }}" class="orgmate-form">
                 @csrf
@@ -152,14 +152,14 @@
                         @error('realized')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                     </div>
                 </div>
-                <button type="submit" class="orgmate-btn"><i data-lucide="save"></i> Simpan RAB</button>
+                <button type="submit" class="orgmate-btn"><i data-lucide="save" class="icon"></i> Simpan RAB</button>
             </form>
         </div>
 
         @foreach ($budgets as $budget)
             <dialog class="orgmate-dialog" id="editRab-{{ $budget->id }}" aria-labelledby="editRabTitle-{{ $budget->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editRabTitle-{{ $budget->id }}">Edit Anggaran</h2>
                 <form method="POST" action="{{ route('simora.sentra.rab.update', $budget) }}">

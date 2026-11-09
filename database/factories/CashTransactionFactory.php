@@ -22,7 +22,7 @@ class CashTransactionFactory extends Factory
             'organization_id' => Organization::factory(),
             'created_by' => null,
             'type' => fake()->randomElement(['pemasukan', 'pengeluaran']),
-            'title' => fake()->randomElement(['Iuran Anggota', 'Sponsorship', 'Belanja Konsumsi', 'Sewa Tempat', 'Transportasi']), 
+            'title' => fake()->randomElement(['Iuran Anggota', 'Sponsorship', 'Belanja Konsumsi', 'Sewa Tempat', 'Transportasi']),
             'amount' => fake()->randomFloat(2, 50000, 5000000),
             'date' => fake()->date(),
             'category' => fake()->optional()->word(),

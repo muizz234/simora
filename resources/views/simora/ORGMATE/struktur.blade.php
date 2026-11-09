@@ -31,7 +31,7 @@
     <div class="orgmate-org-grid">
         @forelse ($positions as $position)
             <article class="orgmate-org-card" style="--org-color:#2563EB">
-                <span class="orgmate-position-icon"><i data-lucide="network"></i></span>
+                <span class="orgmate-position-icon"><i data-lucide="network" class="icon"></i></span>
                 <div>
                     <strong>{{ $position->name }}</strong>
                     <span>{{ $position->description ?: 'Struktur pengurus inti' }}</span>
@@ -54,7 +54,7 @@
     @if (!($isDeveloper ?? false))
         <section class="orgmate-card" aria-label="Tambah jabatan">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus"></i> Tambah Jabatan</h2>
+                <h2><i data-lucide="plus" class="icon"></i> Tambah Jabatan</h2>
             </div>
             <form method="POST" action="{{ route('simora.orgmate.struktur.store') }}" class="orgmate-form">
                 @csrf
@@ -63,14 +63,37 @@
                         <input id="positionName" name="name" value="{{ old('name') }}" required>
                         @error('name')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                     </div>
-                    <div class="orgmate-field"><label for="positionMember">Pemegang jabatan (anggota)</label>
-                        <select id="positionMember" name="member_id">
-                            <option value="">— Belum diisi —</option>
-                            @foreach ($members as $member)
-                                <option value="{{ $member->id }}" @selected(old('member_id') == $member->id)>{{ $member->name }}</option>
+                    <div class="orgmate-field"><label for="positionMemberSearch">Cari mahasiswa (nama / NIM)</label>
+                        <input id="positionMemberSearch" type="search" placeholder="Ketikan nama atau NIM…" autocomplete="off"
+                            data-member-search="positionMember">
+                        @error('mahasiswa_id')<small class="orgmate-field-error">{{ $message }}</small>@enderror
+                    </div>
+                    <div class="orgmate-field"><label for="positionMemberAngkatan">Angkatan</label>
+                        <select id="positionMemberAngkatan" data-member-angkatan="positionMember">
+                            <option value="">— Semua angkatan —</option>
+                            @foreach (($angkatanOptions ?? collect()) as $angkatan)
+                                <option value="{{ $angkatan }}">{{ $angkatan }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="orgmate-field"><label for="positionMember">Pemegang jabatan (mahasiswa {{ $prodiLabel ?: '' }})</label>
+                        <select id="positionMember" name="mahasiswa_id">
+                            <option value="">— Belum diisi —</option>
+                            @if (($mahasiswaByAngkatan ?? collect())->isEmpty())
+                                <option value="" disabled>Belum ada data mahasiswa untuk prodi ini</option>
+                            @else
+                                @foreach ($mahasiswaByAngkatan as $angkatanLabel => $list)
+                                    <optgroup label="{{ $angkatanLabel }} ({{ $list->count() }} orang)">
+                                        @foreach ($list as $mhs)
+                                            <option value="{{ $mhs->id }}" data-angkatan="{{ $angkatanLabel }}" @selected(old('mahasiswa_id') == $mhs->id)>{{ $mhs->name }} — {{ $mhs->nim }}</option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('mahasiswa_id')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                         @error('member_id')<small class="orgmate-field-error">{{ $message }}</small>@enderror
+                        <small class="orgmate-field-hint">Hanya mahasiswa prodi {{ $prodiLabel ?: 'organisasi ini' }}, terpisah per angkatan. Pilih lewat pencarian agar cepat.</small>
                     </div>
                     <div class="orgmate-field orgmate-field--wide"><label for="positionDesc">Deskripsi (opsional)</label>
                         <textarea id="positionDesc" name="description" rows="2">{{ old('description') }}</textarea>
@@ -96,4 +119,41 @@
     @endif
 
     <p class="orgmate-hint">Jabatan ini dibagikan ke E-PROGRESS untuk kepanitiaan dan ke SENTRA untuk bendahara.</p>
+
+    @if (!($isDeveloper ?? false))
+        <script>
+            (function () {
+                var search = document.getElementById('positionMemberSearch');
+                var angkatanSelect = document.getElementById('positionMemberAngkatan');
+                var select = document.getElementById('positionMember');
+                if (!search || !select) return;
+
+                function applyFilter() {
+                    var q = (search.value || '').trim().toLowerCase();
+                    var angkatan = angkatanSelect ? (angkatanSelect.value || '') : '';
+
+                    select.querySelectorAll('optgroup').forEach(function (group) {
+                        var groupVisible = false;
+                        group.querySelectorAll('option').forEach(function (option) {
+                            var matchesSearch = q === '' || option.textContent.toLowerCase().includes(q);
+                            var matchesAngkatan = angkatan === '' || option.dataset.angkatan === angkatan;
+                            var visible = matchesSearch && matchesAngkatan;
+                            option.hidden = !visible;
+                            option.disabled = !visible;
+                            if (visible) groupVisible = true;
+                        });
+                        group.style.display = groupVisible ? '' : 'none';
+                    });
+
+                    // Placeholder tidak ikut difilter.
+                    select.querySelectorAll('option:not([data-angkatan])').forEach(function (option) {
+                        option.hidden = false;
+                    });
+                }
+
+                search.addEventListener('input', applyFilter);
+                if (angkatanSelect) angkatanSelect.addEventListener('change', applyFilter);
+            })();
+        </script>
+    @endif
 @endsection

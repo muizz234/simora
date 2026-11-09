@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.seo-head')
     <meta name="theme-color" content="#092e69">
     <title>Presensi {{ $activity->name }} | E-PROGRESS SIMORA</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/SIMORA.png') }}">
-    <link rel="stylesheet" href="/assets/css/e-progress.css?v=3">
-    <link rel="stylesheet" href="/assets/css/simora-theme.css?v=2">
+    @vite(['resources/css/simora/module/module.css', 'resources/css/simora/orgmate/orgmate.css', 'resources/css/simora/e-progress/e-progress.css', 'resources/css/simora/theme/simora-theme.css', 'resources/js/simora/module.js'])
 </head>
 
 <body class="orgmate-body eprogress-body">
@@ -24,7 +24,7 @@
 
             @if ($checkedIn)
                 <div class="eprogress-checkin-success">
-                    <span class="eprogress-checkin-icon"><i data-lucide="check"></i></span>
+                    <span class="eprogress-checkin-icon"><i data-lucide="check" class="icon"></i></span>
                     <h2>Berhasil Check-in!</h2>
                     <p>Nama Anda sudah tercatat. Terima kasih sudah hadir.</p>
                 </div>
@@ -41,8 +41,7 @@
             @endif
         </div>
     </div>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>if (window.lucide) window.lucide.createIcons();</script>
+
 </body>
 
 </html>

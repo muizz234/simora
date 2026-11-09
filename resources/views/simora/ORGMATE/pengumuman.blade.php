@@ -31,7 +31,7 @@
     <div class="orgmate-list">
         @forelse ($announcements as $announcement)
             <article class="orgmate-post">
-                <span class="orgmate-post-icon"><i data-lucide="megaphone"></i></span>
+                <span class="orgmate-post-icon"><i data-lucide="megaphone" class="icon"></i></span>
                 <div style="flex:1;min-width:0">
                     <h3>{{ $announcement->title }}</h3>
                     <p style="white-space:pre-line">{{ $announcement->content }}</p>
@@ -60,7 +60,7 @@
     @if (!($isDeveloper ?? false))
         <section class="orgmate-card" aria-label="Buat pengumuman">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus"></i> Buat Pengumuman</h2>
+                <h2><i data-lucide="plus" class="icon"></i> Buat Pengumuman</h2>
             </div>
             <form method="POST" action="{{ route('simora.orgmate.pengumuman.store') }}" class="orgmate-form">
                 @csrf
@@ -85,7 +85,7 @@
         @foreach ($announcements as $announcement)
             <dialog class="orgmate-dialog" id="editAnnouncement-{{ $announcement->id }}" aria-labelledby="editAnnouncementTitle-{{ $announcement->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editAnnouncementTitle-{{ $announcement->id }}">Edit Pengumuman</h2>
                 <form method="POST" action="{{ route('simora.orgmate.pengumuman.update', $announcement) }}">

@@ -93,7 +93,7 @@
     @if (!($isDeveloper ?? false))
         <section class="orgmate-card" aria-label="Tambah arsip">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="upload"></i> Upload Dokumen</h2>
+                <h2><i data-lucide="upload" class="icon"></i> Upload Dokumen</h2>
             </div>
             <form method="POST" action="{{ route('simora.orgmate.arsip.store') }}" class="orgmate-form" enctype="multipart/form-data">
                 @csrf
@@ -130,7 +130,7 @@
         @foreach ($archives as $archive)
             <dialog class="orgmate-dialog" id="editArchive-{{ $archive->id }}" aria-labelledby="editArchiveTitle-{{ $archive->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editArchiveTitle-{{ $archive->id }}">Edit Arsip</h2>
                 <form method="POST" action="{{ route('simora.orgmate.arsip.update', $archive) }}" enctype="multipart/form-data">

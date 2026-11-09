@@ -26,7 +26,7 @@ class ArchiveController extends Controller
         $data['uploaded_by'] = $request->user()->id;
 
         if ($request->hasFile('file')) {
-            $data['file_path'] = $request->file('file')->storePublicly('archives', 'public');
+            $data['file_path'] = $request->file('file')->store('archives', 'local');
         }
 
         Archive::create($data);
@@ -43,7 +43,7 @@ class ArchiveController extends Controller
 
         if ($request->hasFile('file')) {
             $this->deleteUploadedFile($archive->file_path);
-            $data['file_path'] = $request->file('file')->storePublicly('archives', 'public');
+            $data['file_path'] = $request->file('file')->store('archives', 'local');
         }
 
         $archive->update($data);
@@ -64,6 +64,15 @@ class ArchiveController extends Controller
             ->with('status', 'Arsip berhasil dihapus.');
     }
 
+    public function download(Request $request, Archive $archive)
+    {
+        OrganizationScope::assertCanAccessOrganization($request->user(), $archive->organization_id);
+
+        abort_if($archive->file_path === null || ! Storage::disk('local')->exists($archive->file_path), 404);
+
+        return Storage::disk('local')->response($archive->file_path);
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -81,7 +90,7 @@ class ArchiveController extends Controller
     private function deleteUploadedFile(?string $path): void
     {
         if ($path !== null && str_starts_with($path, 'archives/')) {
-            Storage::disk('public')->delete($path);
+            Storage::disk('local')->delete($path);
         }
     }
 }

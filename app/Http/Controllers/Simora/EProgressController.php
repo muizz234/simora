@@ -257,7 +257,7 @@ class EProgressController extends Controller
         $attendances = $attendanceQuery->orderByDesc('checked_at')->get();
 
         $checkinUrl = $selectedActivity
-            ? URL::signedRoute('presensi.checkin', ['activity' => $selectedActivity->id])
+            ? URL::temporarySignedRoute('presensi.checkin', now()->addMinutes(5), ['activity' => $selectedActivity->id])
             : null;
 
         $stats = [
@@ -403,7 +403,7 @@ class EProgressController extends Controller
             ['icon' => 'qr-code', 'title' => 'Absensi / Presensi (QR Code)', 'desc' => 'Presensi peserta via scan QR.', 'steps' => ['Pilih kegiatan → QR presensi tampil besar.', 'Tayangkan/cetak QR di pintu masuk (tombol Unduh QR / Cetak).', 'Peserta scan QR → halaman check-in terbuka → isi nama → Saya Hadir.', 'Panitia bisa mencatat manual bila peserta terkendala scan.']],
             ['icon' => 'image', 'title' => 'Dokumentasi Kegiatan', 'desc' => 'Simpan foto, video, dokumen kegiatan.', 'steps' => ['Pilih kegiatan → Unggah Dokumentasi (boleh banyak berkas sekaligus, maks 10).', 'Foto tampil galeri grid; klik untuk membuka ukuran penuh.', 'Dokumentasi terbaik tampil di halaman publik Kegiatan beserta nama kegiatan, logo, dan organisasi.']],
             ['icon' => 'file-check', 'title' => 'Evaluasi & LPJ', 'desc' => 'Tulis evaluasi dan laporan pertanggungjawaban.', 'steps' => ['Pilih kegiatan → Tulis Dokumen: judul, tipe Evaluasi atau LPJ, status Draft/Selesai.', 'Gunakan filter tab Semua/Evaluasi/LPJ untuk memilah dokumen.', 'LPJ yang selesai tertaut otomatis di SENTRA → Realisasi Anggaran sebagai bukti.']],
-            ['icon' => 'bar-chart-3', 'title' => 'Monitoring Progres Proker', 'desc' => 'Pantau kemajuan proker secara nyata.', 'steps' => ['Progress dihitung dari kegiatan berstatus Selesai per proker (bukan angka manual).', 'Lihat bar progres, rincian tahapan, dan kegiatan terakhir tiap proker.', 'Developer melihat lintas organisasi lewat pemilih organisasi.']],
+            ['icon' => 'chart-column', 'title' => 'Monitoring Progres Proker', 'desc' => 'Pantau kemajuan proker secara nyata.', 'steps' => ['Progress dihitung dari kegiatan berstatus Selesai per proker (bukan angka manual).', 'Lihat bar progres, rincian tahapan, dan kegiatan terakhir tiap proker.', 'Developer melihat lintas organisasi lewat pemilih organisasi.']],
         ];
     }
 

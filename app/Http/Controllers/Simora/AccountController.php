@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class AccountController extends Controller
@@ -46,11 +47,15 @@ class AccountController extends Controller
             }
         }
 
-        $data['api_token'] = Str::random(60);
+        $plainToken = Str::random(60);
+        $hashedToken = hash('sha256', $plainToken);
 
-        User::create($data);
+        $user = User::create($data);
+        // api_token tidak mass-assignable (Fillable dihapus); set manual hash-nya.
+        $user->forceFill(['api_token' => $hashedToken])->saveQuietly();
 
         return redirect()->route('simora.accounts.index')
+            ->with('api_token_plain', $plainToken)
             ->with('status', 'Akun berhasil ditambahkan.');
     }
 
@@ -112,7 +117,7 @@ class AccountController extends Controller
         return $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($account?->id)],
-            'password' => [$account === null ? 'required' : 'nullable', 'string', 'min:8', 'max:255'],
+            'password' => [$account === null ? 'required' : 'nullable', Password::min(8)->mixedCase()->numbers()],
             'role' => ['required', Rule::in(User::ROLES)],
             'organization_id' => ['nullable', 'exists:organizations,id'],
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

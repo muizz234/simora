@@ -9,7 +9,7 @@
         <div class="sentra-head-right">
             @if(($isDeveloper ?? false) && ($organizationsList ?? collect())->count() > 0)
                 <form method="GET" action="{{ route('simora.sentra.iuran') }}" class="sentra-periode">
-                    <i data-lucide="building-2"></i><label>Organisasi:</label>
+                    <i data-lucide="building-2" class="icon"></i><label>Organisasi:</label>
                     <select name="organization" onchange="this.form.submit()">
                         <option value="">Semua Organisasi</option>
                         @foreach ($organizationsList as $org)
@@ -19,7 +19,7 @@
                 </form>
             @endif
             @if(auth()->user()->role !== 'developer')
-                <a class="orgmate-btn" href="#catat-iuran"><i data-lucide="plus"></i> Catat Iuran</a>
+                <a class="orgmate-btn" href="#catat-iuran"><i data-lucide="plus" class="icon"></i> Catat Iuran</a>
             @else
                 <span class="badge gray">Mode manajemen organisasi (view-only)</span>
             @endif
@@ -48,18 +48,18 @@
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="users"></i> Daftar Pembayaran Iuran</h2>
+            <h2><i data-lucide="users" class="icon"></i> Daftar Pembayaran Iuran</h2>
             <span class="badge gray">{{ $dues->total() }} tagihan</span>
         </div>
         <form method="GET" action="{{ route('simora.sentra.iuran') }}" class="sentra-toolbar" role="search">
             @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
             @if($status)<input type="hidden" name="status" value="{{ $status }}">@endif
             <label class="orgmate-search" style="margin:0;flex:1;min-width:200px">
-                <i data-lucide="search"></i>
+                <i data-lucide="search" class="icon"></i>
                 <input type="search" name="periode" value="{{ $period }}" placeholder="Cari periode (mis. Wajib, 2026)..."
                     aria-label="Cari periode iuran">
             </label>
-            <button class="orgmate-btn ghost" type="submit"><i data-lucide="search"></i> Cari</button>
+            <button class="orgmate-btn ghost" type="submit"><i data-lucide="search" class="icon"></i> Cari</button>
             @if ($period !== '')
                 <a class="orgmate-btn ghost" href="{{ route('simora.sentra.iuran', $selectedOrganization ? ['organization' => $selectedOrganization->slug] : []) }}">Reset</a>
             @endif
@@ -131,7 +131,7 @@
     @if(auth()->user()->role !== 'developer')
         <div class="orgmate-card" id="catat-iuran">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus-circle"></i> Catat Pembayaran Iuran</h2>
+                <h2><i data-lucide="circle-plus" class="icon"></i> Catat Pembayaran Iuran</h2>
             </div>
             <form method="POST" action="{{ route('simora.sentra.iuran.store') }}" class="orgmate-form" enctype="multipart/form-data">
                 @csrf
@@ -172,14 +172,14 @@
                         @error('proof')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                     </div>
                 </div>
-                <button type="submit" class="orgmate-btn"><i data-lucide="save"></i> Simpan Iuran</button>
+                <button type="submit" class="orgmate-btn"><i data-lucide="save" class="icon"></i> Simpan Iuran</button>
             </form>
         </div>
 
         @foreach ($dues as $due)
             <dialog class="orgmate-dialog" id="editDue-{{ $due->id }}" aria-labelledby="editDueTitle-{{ $due->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editDueTitle-{{ $due->id }}">Edit Iuran</h2>
                 <form method="POST" action="{{ route('simora.sentra.iuran.update', $due) }}" enctype="multipart/form-data">

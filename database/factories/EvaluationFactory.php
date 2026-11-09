@@ -23,7 +23,7 @@ class EvaluationFactory extends Factory
             'organization_id' => Organization::factory(),
             'activity_id' => Activity::factory(),
             'created_by' => null,
-            'title' => fake()->randomElement(['Evaluasi Kegiatan', 'LPJ Kegiatan', 'Refleksi Program']), 
+            'title' => fake()->randomElement(['Evaluasi Kegiatan', 'LPJ Kegiatan', 'Refleksi Program']),
             'content' => fake()->optional()->paragraph(),
             'type' => fake()->randomElement(['evaluasi', 'lpj']),
             'status' => fake()->randomElement(['draft', 'selesai', 'disetujui']),

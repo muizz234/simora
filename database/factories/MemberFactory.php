@@ -26,6 +26,7 @@ class MemberFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->optional()->phoneNumber(),
             'faculty' => fake()->optional()->word(),
+            'study_program' => fake()->optional()->randomElement(['Teknologi Informasi', 'Teknik Informatika', 'Teknik Elektro']),
             'status' => 'aktif',
             'avatar_path' => null,
         ];

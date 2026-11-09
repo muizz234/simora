@@ -12,7 +12,7 @@
     <div class="guide-grid">
         @foreach ($guides as $guide)
             <article class="orgmate-card guide-card">
-                <div class="orgmate-card-head"><h2><i data-lucide="{{ $guide['icon'] }}"></i> {{ $guide['title'] }}</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="{{ $guide['icon'] }}" class="icon"></i> {{ $guide['title'] }}</h2></div>
                 <p class="guide-desc">{{ $guide['desc'] }}</p>
                 <ol class="guide-steps">
                     @foreach ($guide['steps'] as $step)
@@ -24,7 +24,7 @@
     </div>
 
     <div class="orgmate-card guide-tips">
-        <div class="orgmate-card-head"><h2><i data-lucide="lightbulb"></i> Tips Umum</h2></div>
+        <div class="orgmate-card-head"><h2><i data-lucide="lightbulb" class="icon"></i> Tips Umum</h2></div>
         <ul class="guide-tips-list">
             <li>Alur yang disarankan: Anggaran &amp; RAB → Kas/Iuran → Realisasi → Laporan Keuangan.</li>
             <li>SEMUA transaksi uang (kas, iuran, realisasi) WAJIB melampirkan bukti — klik 📷 Kamera untuk foto struk langsung atau upload file.</li>

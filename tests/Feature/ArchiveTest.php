@@ -16,7 +16,7 @@ class ArchiveTest extends TestCase
 
     public function test_organization_can_upload_an_archive_and_it_appears_in_the_list(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
         $organization = Organization::factory()->create();
         $account = User::factory()->create([
             'role' => User::ROLE_ORGANIZATION,
@@ -36,7 +36,7 @@ class ArchiveTest extends TestCase
         $archive = Archive::where('organization_id', $organization->id)->firstOrFail();
 
         $this->assertSame('SK Kepengurusan', $archive->title);
-        Storage::disk('public')->assertExists($archive->file_path);
+        Storage::disk('local')->assertExists($archive->file_path);
 
         $this->actingAs($account)
             ->get(route('simora.orgmate.arsip'))

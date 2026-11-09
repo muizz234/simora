@@ -21,7 +21,7 @@ class FundRequestFactory extends Factory
         return [
             'organization_id' => Organization::factory(),
             'decided_by' => null,
-            'title' => fake()->randomElement(['Pengajuan Dana Kegiatan', 'Pengajuan Dana Konsumsi', 'Pengajuan Dana Transportasi']), 
+            'title' => fake()->randomElement(['Pengajuan Dana Kegiatan', 'Pengajuan Dana Konsumsi', 'Pengajuan Dana Transportasi']),
             'description' => fake()->optional()->sentence(),
             'amount' => fake()->randomFloat(2, 100000, 3000000),
             'status' => fake()->randomElement(['menunggu', 'disetujui', 'ditolak']),

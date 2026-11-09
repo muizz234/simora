@@ -23,7 +23,7 @@ class AccountAvatarTest extends TestCase
             ->post(route('simora.accounts.store'), [
                 'name' => 'Ketua HIMA-TI',
                 'email' => 'ketua@example.com',
-                'password' => 'password123',
+                'password' => 'Himati123',
                 'role' => User::ROLE_ORGANIZATION,
                 'organization_id' => $organization->id,
                 'avatar' => UploadedFile::fake()->image('ketua.jpg'),
@@ -102,7 +102,7 @@ class AccountAvatarTest extends TestCase
             ->post(route('simora.accounts.store'), [
                 'name' => 'Akun Tes',
                 'email' => 'tes@example.com',
-                'password' => 'password123',
+                'password' => 'Himati123',
                 'role' => 'user',
                 'organization_id' => null,
                 'avatar' => UploadedFile::fake()->create('dokumen.pdf', 100, 'application/pdf'),

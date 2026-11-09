@@ -13,19 +13,19 @@
                     <button class="eprogress-guide" type="button" onclick="window.location.href='{{ route('simora.e-progress.panduan') }}'">Panduan E-PROGRESS <i
                             data-lucide="arrow-right"></i></button>
                 </div>
-                <div class="eprogress-banner-art" aria-hidden="true"><i data-lucide="calendar-days"></i></div>
+                <div class="eprogress-banner-art" aria-hidden="true"><i data-lucide="calendar-days" class="icon"></i></div>
             </section>
             <aside class="eprogress-sidecards">
                 <div class="eprogress-sidecard">
-                    <span class="eprogress-sidecard-label"><i data-lucide="calendar-days"></i> Periode Kepengurusan</span>
+                    <span class="eprogress-sidecard-label"><i data-lucide="calendar-days" class="icon"></i> Periode Kepengurusan</span>
                     <div class="eprogress-sidecard-value">{{ $periodLabel }}</div>
                 </div>
                 <div class="eprogress-sidecard">
-                    <span class="eprogress-sidecard-label"><i data-lucide="clock"></i> Jam Sekarang</span>
+                    <span class="eprogress-sidecard-label"><i data-lucide="clock" class="icon"></i> Jam Sekarang</span>
                     <div class="eprogress-sidecard-value" data-live-clock>—</div>
                 </div>
                 <div class="eprogress-sidecard">
-                    <span class="eprogress-sidecard-label"><i data-lucide="users"></i> Organisasi Aktif</span>
+                    <span class="eprogress-sidecard-label"><i data-lucide="users" class="icon"></i> Organisasi Aktif</span>
                     <div class="eprogress-sidecard-value">{{ $orgName ?? '—' }}</div>
                     <small
                         class="eprogress-sidecard-hint">{{ $isDeveloper ?? false ? 'Developer: mengelola semua organisasi' : 'Sesuai organisasi login' }}</small>
@@ -72,7 +72,7 @@
         <div class="eprogress-mid">
             <section class="orgmate-card eprogress-chart-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="bar-chart-3"></i> Statistik Kegiatan</h2>
+                    <h2><i data-lucide="chart-column" class="icon"></i> Statistik Kegiatan</h2>
                     <div class="eprogress-tabs"><span class="badge gray">6 Bulan Terakhir</span><span
                             class="badge blue">Kegiatan</span><span class="badge gray">Peserta</span><span
                             class="badge gray">Progres</span></div>
@@ -82,14 +82,14 @@
             </section>
             <section class="orgmate-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="calendar-check"></i> Agenda Mendatang</h2><a
+                    <h2><i data-lucide="calendar-check" class="icon"></i> Agenda Mendatang</h2><a
                         href="{{ route('simora.e-progress') }}">Lihat Semua →</a>
                 </div>
                 <div class="orgmate-empty">Belum ada agenda mendatang.</div>
             </section>
             <section class="orgmate-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="zap"></i> Aksi Cepat</h2><a href="{{ route('simora.e-progress') }}">Lihat Semua
+                    <h2><i data-lucide="zap" class="icon"></i> Aksi Cepat</h2><a href="{{ route('simora.e-progress') }}">Lihat Semua
                         →</a>
                 </div>
                 @if(($isDeveloper ?? false))
@@ -115,7 +115,7 @@
         <div class="eprogress-bottom">
             <section class="orgmate-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="target"></i> Progres Program Kerja</h2><a
+                    <h2><i data-lucide="target" class="icon"></i> Progres Program Kerja</h2><a
                         href="{{ route('simora.e-progress') }}">Lihat Detail →</a>
                 </div>
                 <div class="eprogress-progress-wrap">
@@ -138,7 +138,7 @@
             </section>
             <section class="orgmate-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="megaphone"></i> Kegiatan Terbaru</h2><a
+                    <h2><i data-lucide="megaphone" class="icon"></i> Kegiatan Terbaru</h2><a
                         href="{{ route('simora.e-progress') }}">Lihat Semua →</a>
                 </div>
                 @forelse ($recentActivities as $activity)
@@ -154,7 +154,7 @@
             </section>
             <section class="orgmate-card">
                 <div class="orgmate-card-head">
-                    <h2><i data-lucide="bell"></i> Notifikasi Terbaru <span class="badge red">3</span></h2><a
+                    <h2><i data-lucide="bell" class="icon"></i> Notifikasi Terbaru <span class="badge red">3</span></h2><a
                         href="{{ route('simora.e-progress') }}">Lihat Semua →</a>
                 </div>
                 <ul class="eprogress-notif">

@@ -9,16 +9,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('organizations', function (Blueprint $table) {
-            if (!Schema::hasColumn('organizations', 'facebook_url')) {
+            if (! Schema::hasColumn('organizations', 'facebook_url')) {
                 $table->text('facebook_url')->nullable()->after('whatsapp_url');
             }
-            if (!Schema::hasColumn('organizations', 'x_url')) {
+            if (! Schema::hasColumn('organizations', 'x_url')) {
                 $table->text('x_url')->nullable()->after('facebook_url');
             }
-            if (!Schema::hasColumn('organizations', 'telegram_url')) {
+            if (! Schema::hasColumn('organizations', 'telegram_url')) {
                 $table->text('telegram_url')->nullable()->after('x_url');
             }
-            if (!Schema::hasColumn('organizations', 'email')) {
+            if (! Schema::hasColumn('organizations', 'email')) {
                 $table->string('email')->nullable()->after('telegram_url');
             }
         });

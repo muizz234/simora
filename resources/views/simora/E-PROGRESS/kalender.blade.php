@@ -31,7 +31,7 @@
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="calendar-days"></i> {{ $prev->copy()->locale('id')->translatedFormat('F Y') }}</h2>
+            <h2><i data-lucide="calendar-days" class="icon"></i> {{ $prev->copy()->locale('id')->translatedFormat('F Y') }}</h2>
             <div class="eprogress-cal-nav">
                 <a class="orgmate-btn ghost orgmate-btn-sm" href="{{ route('simora.e-progress.kalender', array_merge(request()->only('organization'), ['year' => $prev->format('Y'), 'month' => $prev->format('m')])) }}">‹ Sebelumnya</a>
                 <a class="orgmate-btn ghost orgmate-btn-sm" href="{{ route('simora.e-progress.kalender', array_merge(request()->only('organization'), ['year' => $next->format('Y'), 'month' => $next->format('m')])) }}">Berikutnya ›</a>
@@ -57,12 +57,12 @@
 
     <div class="orgmate-card">
         <div class="orgmate-card-head">
-            <h2><i data-lucide="list"></i> Kegiatan Bulan Ini</h2>
+            <h2><i data-lucide="list" class="icon"></i> Kegiatan Bulan Ini</h2>
             <span class="badge gray">{{ $monthActivities->count() }} kegiatan</span>
         </div>
         @forelse ($monthActivities as $activity)
             <div class="orgmate-post">
-                <span class="orgmate-post-icon"><i data-lucide="calendar-check"></i></span>
+                <span class="orgmate-post-icon"><i data-lucide="calendar-check" class="icon"></i></span>
                 <div style="flex:1;min-width:0">
                     <h3>{{ $activity->name }}</h3>
                     <p>{{ $activity->description ?: ($activity->location ?: 'Tanpa keterangan tambahan.') }}</p>
@@ -90,7 +90,7 @@
     @if (!($isDeveloper ?? false))
         <section class="orgmate-card" aria-label="Tambah kegiatan">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="plus"></i> Tambah Kegiatan</h2>
+                <h2><i data-lucide="plus" class="icon"></i> Tambah Kegiatan</h2>
             </div>
             <form method="POST" action="{{ route('simora.e-progress.kalender.store') }}" class="orgmate-form">
                 @csrf
@@ -140,7 +140,7 @@
         @foreach ($monthActivities as $activity)
             <dialog class="orgmate-dialog" id="editActivity-{{ $activity->id }}" aria-labelledby="editActivityTitle-{{ $activity->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editActivityTitle-{{ $activity->id }}">Edit Kegiatan</h2>
                 <form method="POST" action="{{ route('simora.e-progress.kalender.update', $activity) }}">

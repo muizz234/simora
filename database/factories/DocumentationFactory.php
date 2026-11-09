@@ -23,7 +23,7 @@ class DocumentationFactory extends Factory
             'organization_id' => Organization::factory(),
             'activity_id' => Activity::factory(),
             'uploaded_by' => null,
-            'title' => fake()->randomElement(['Foto Kegiatan', 'Dokumen Acara', 'Rekaman Opening']), 
+            'title' => fake()->randomElement(['Foto Kegiatan', 'Dokumen Acara', 'Rekaman Opening']),
             'type' => fake()->randomElement(['foto', 'dokumen']),
             'file_path' => null,
         ];

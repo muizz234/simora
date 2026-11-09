@@ -35,11 +35,10 @@ class OrganizationDashboardTest extends TestCase
             'organization_id' => $organization->id,
         ]);
 
-        $this->actingAs($account)
-            ->get(route('panel'))
-            ->assertOk()
+        $response = $this->actingAs($account)->get(route('panel'));
+        $response->assertOk()
+            // Struktural: status + data organisasi dari DB + route modul.
             ->assertSee('Dashboard Organisasi')
-            ->assertSee('PANEL ORGANISASI')
             ->assertSee('HIMA-TI')
             ->assertSee('Himpunan Mahasiswa Teknologi Informasi')
             ->assertSee('Teknologi Informasi')
@@ -47,13 +46,13 @@ class OrganizationDashboardTest extends TestCase
             ->assertSee('Deskripsi HIMA-TI untuk pengujian.')
             ->assertSee('Visi HIMA-TI.')
             ->assertSee('Misi HIMA-TI.')
-            ->assertSee('Organisasi')
             ->assertSee('ORGMATE')
-            ->assertSee('Manajemen Organisasi dan Keanggotaan (Master Data)')
+            ->assertSee(route('simora.orgmate'), false)
             ->assertSee('E-PROGRESS')
-            ->assertSee('Manajemen Kegiatan dan Program Kerja')
+            ->assertSee(route('simora.e-progress'), false)
             ->assertSee('SENTRA')
-            ->assertSee('Manajemen Keuangan dan Aset');
+            ->assertSee(route('simora.sentra'), false);
+        // Judul deskriptif kartu modul boleh berubah; route adalah kontrak stabil.
     }
 
     public function test_developer_still_sees_developer_dashboard(): void

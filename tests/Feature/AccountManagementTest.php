@@ -35,7 +35,7 @@ class AccountManagementTest extends TestCase
         $this->post(route('simora.accounts.store'), [
             'name' => 'HIMA-TI',
             'email' => 'simora.himati@gmail.com',
-            'password' => 'himati123',
+            'password' => 'Himati123',
             'role' => 'organization',
             'organization_id' => $organization->id,
         ])->assertRedirect(route('simora.accounts.index'));
@@ -50,7 +50,7 @@ class AccountManagementTest extends TestCase
         $this->put(route('simora.accounts.update', $account), [
             'name' => 'HIMA-TI Baru',
             'email' => 'simora.himati@gmail.com',
-            'password' => 'himati456',
+            'password' => 'Himati456',
             'role' => 'organization',
             'organization_id' => $organization->id,
         ])->assertRedirect(route('simora.accounts.index'));

@@ -1924,7 +1924,7 @@ body.dark-mode {
 }
 
 .hero {
-    background-image: url('/assets/backgropund.png');
+    background-image: url('/assets/background.png');
     background-size: cover;
     background-position: center 52%;
     background-repeat: no-repeat

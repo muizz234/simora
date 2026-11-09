@@ -15,7 +15,7 @@ class OrganizationRegistrationController extends Controller
         abort_if($organization === null, 403, 'Akun ini belum terhubung ke organisasi.');
 
         $data = $request->validate([
-            'registration_url' => ['required', 'url', 'max:2048'],
+            'registration_url' => ['required', 'url', 'regex:/^https?:\/\//', 'max:2048'],
         ]);
 
         $organization->update($data);

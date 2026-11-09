@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @include('partials.seo-head')
     <title>Login SIMORA | Fakultas Teknik UNUJA</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/SIMORA.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <link rel="stylesheet" href="/assets/css/auth.css?v=3">
-    <script src="/assets/js/auth.js?v=3" defer></script>
+    @vite(['resources/css/auth/auth.css', 'resources/js/auth/auth.js'])
 </head>
 
 <body class="login-page">
@@ -21,7 +21,7 @@
             <div class="login-logos">
                 <img src="{{ asset('assets/SIMORA.png') }}" alt="Logo SIMORA" class="simora-logo">
             </div>
-            <h1 id="login-title" hidden>Login</h1>
+            <h1 id="login-title" class="visually-hidden">Login SIMORA</h1>
             <form method="POST" action="{{ route('login.store') }}" class="login-form">
                 @csrf
                 <label for="email">Email</label>

@@ -1,3 +1,42 @@
+/* ===== Ikon Lucide: konsistensi global (modul SIMORA) =====
+   Semua ikon memakai <i data-lucide class="icon">; createIcons() mengganti
+   <i> menjadi <svg class="lucide icon">. Ukuran default 1em menjaga ikon tidak
+   collapse sebelum JS jalan dan mengikuti ukuran teks sekitar. Selektor
+   komponen yang lebih spesifik (mis. .orgmate-stat-icon svg, .sentra-stat-icon
+   svg) tetap menang atas aturan global ini, jadi layout tidak berubah. */
+.icon,
+[data-lucide],
+[data-lucide]::before,
+[data-lucide]::after {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex: none;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+svg.lucide.icon,
+svg.lucide[data-lucide],
+svg.lucide {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex: none;
+    vertical-align: middle;
+    color: currentColor;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Ikon dekoratif: disembunyikan dari AT (createIcons memberi aria-hidden) */
+svg.lucide[aria-hidden="true"] {
+    pointer-events: none;
+}
+
 .module-header-label {
     display: flex;
     align-items: center;
@@ -211,4 +250,45 @@
     .module-empty {
         min-height: 210px
     }
+}
+
+/* Dark mode: ikon memakai currentColor, jadi kontras mengikuti warna teks
+   induk. Blok ini mencegah kartu kosong/tombol kembali terang menyilaukan
+   di latar gelap dan memastikan ikon tetap terbaca. */
+body.dark-mode .module-header-label {
+    color: #c1d0e3
+}
+
+body.dark-mode .module-header-label span {
+    background: var(--blue-soft, #172942);
+    color: #8bbcff
+}
+
+body.dark-mode .module-back {
+    background: #142238;
+    border-color: #263a56;
+    color: #c1d0e3
+}
+
+body.dark-mode .module-back:hover {
+    border-color: #1265d8;
+    color: #8bbcff
+}
+
+body.dark-mode .module-empty {
+    background: #101f36;
+    border-color: #2c4465
+}
+
+body.dark-mode .empty-symbol {
+    background: var(--blue-soft, #172942);
+    color: #8bbcff
+}
+
+body.dark-mode .module-empty h2 {
+    color: #e5efff
+}
+
+body.dark-mode .module-empty p {
+    color: #9caec5
 }

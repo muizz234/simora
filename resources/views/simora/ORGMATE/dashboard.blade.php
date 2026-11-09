@@ -9,10 +9,10 @@
             <p class="lead">Kelola organisasi{{ $orgName ? ' ' . $orgName : '' }} dengan lebih mudah dan terintegrasi</p>
         </div>
         <div class="orgmate-hero-datebox">
-            <a class="orgmate-btn" href="{{ route('simora.orgmate.panduan') }}" style="margin-bottom:10px"><i data-lucide="book-open"></i> Panduan ORGMATE</a>
-            <span class="orgmate-hero-date"><i data-lucide="calendar-days"></i><span
+            <a class="orgmate-btn" href="{{ route('simora.orgmate.panduan') }}" style="margin-bottom:10px"><i data-lucide="book-open" class="icon"></i> Panduan ORGMATE</a>
+            <span class="orgmate-hero-date"><i data-lucide="calendar-days" class="icon"></i><span
                     data-live-date>{{ $todayLabel }}</span></span>
-            <span class="orgmate-hero-date"><i data-lucide="clock"></i><span data-live-clock>—</span></span>
+            <span class="orgmate-hero-date"><i data-lucide="clock" class="icon"></i><span data-live-clock>—</span></span>
             @php $orgPeriod = $selectedOrganization?->period ?? auth()->user()->organization?->period ?? ($organizationsList ?? collect())->first()?->period; @endphp
             @if (!empty($orgPeriod))
                 <small class="orgmate-hijri">Periode: {{ $orgPeriod }}</small>
@@ -39,22 +39,22 @@
     {{-- ===== 4 kartu berwarna seperti contoh ===== --}}
     <div class="orgmate-stats">
         <article class="orgmate-stat orgmate-stat--blue">
-            <span class="orgmate-stat-icon"><i data-lucide="users"></i></span>
+            <span class="orgmate-stat-icon"><i data-lucide="users" class="icon"></i></span>
             <div><strong>{{ number_format($totalAnggota) }}</strong><span class="lbl">Total Anggota</span></div>
             <span class="orgmate-stat-delta">+2%</span>
         </article>
         <article class="orgmate-stat orgmate-stat--purple">
-            <span class="orgmate-stat-icon"><i data-lucide="network"></i></span>
+            <span class="orgmate-stat-icon"><i data-lucide="network" class="icon"></i></span>
             <div><strong>{{ number_format($totalDivisi) }}</strong><span class="lbl">Divisi</span></div>
             <span class="orgmate-stat-delta">→ 0%</span>
         </article>
         <article class="orgmate-stat orgmate-stat--green">
-            <span class="orgmate-stat-icon"><i data-lucide="file-text"></i></span>
+            <span class="orgmate-stat-icon"><i data-lucide="file-text" class="icon"></i></span>
             <div><strong>{{ number_format($totalDokumen) }}</strong><span class="lbl">Dokumen Arsip</span></div>
             <span class="orgmate-stat-delta">+1%</span>
         </article>
         <article class="orgmate-stat orgmate-stat--amber">
-            <span class="orgmate-stat-icon"><i data-lucide="megaphone"></i></span>
+            <span class="orgmate-stat-icon"><i data-lucide="megaphone" class="icon"></i></span>
             <div><strong>{{ number_format($totalPengumuman) }}</strong><span class="lbl">Pengumuman Aktif</span></div>
             <span class="orgmate-stat-delta">→ 0%</span>
         </article>
@@ -64,7 +64,7 @@
     <div class="orgmate-row-2">
         <section class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="bar-chart-3"></i> Statistik Organisasi</h2>
+                <h2><i data-lucide="chart-column" class="icon"></i> Statistik Organisasi</h2>
                 <span class="badge gray">Tahun Ini</span>
             </div>
             @if ($totalAnggota === 0)
@@ -78,7 +78,7 @@
 
         <section class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="network"></i> Struktur Organisasi</h2>
+                <h2><i data-lucide="network" class="icon"></i> Struktur Organisasi</h2>
                 <a href="{{ route('simora.orgmate.struktur') }}">Lihat Detail →</a>
             </div>
             <div class="orgmate-orgchart">
@@ -101,7 +101,7 @@
     <div class="orgmate-row-3">
         <section class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="users"></i> Data Anggota Terbaru</h2>
+                <h2><i data-lucide="users" class="icon"></i> Data Anggota Terbaru</h2>
                 <a href="{{ route('simora.orgmate.anggota') }}">Lihat Semua →</a>
             </div>
             @if ($recentMembers->isEmpty())
@@ -129,19 +129,19 @@
                 </ul>
             @endif
             <div class="orgmate-actions" style="margin-top:12px">
-                <a class="orgmate-btn" href="{{ route('simora.orgmate.anggota') }}"><i data-lucide="user-plus"></i> Tambah
+                <a class="orgmate-btn" href="{{ route('simora.orgmate.anggota') }}"><i data-lucide="user-plus" class="icon"></i> Tambah
                     Anggota</a>
             </div>
         </section>
 
         <section class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="megaphone"></i> Pengumuman Terbaru</h2>
+                <h2><i data-lucide="megaphone" class="icon"></i> Pengumuman Terbaru</h2>
                 <a href="{{ route('simora.orgmate.pengumuman') }}">Lihat Semua →</a>
             </div>
             <div class="orgmate-empty">Belum ada pengumuman internal.</div>
             <div class="orgmate-list" style="margin-top:12px">
-                <div class="orgmate-post"><span class="orgmate-post-icon"><i data-lucide="info"></i></span>
+                <div class="orgmate-post"><span class="orgmate-post-icon"><i data-lucide="info" class="icon"></i></span>
                     <div>
                         <h3>Contoh format pengumuman</h3>
                         <p>Judul, isi singkat, dan tanggal publikasi akan tampil di sini setelah data tersedia.</p>
@@ -149,14 +149,14 @@
                 </div>
             </div>
             <div class="orgmate-actions">
-                <a class="orgmate-btn ghost" href="{{ route('simora.orgmate.pengumuman') }}"><i data-lucide="plus"></i>
+                <a class="orgmate-btn ghost" href="{{ route('simora.orgmate.pengumuman') }}"><i data-lucide="plus" class="icon"></i>
                     Buat Pengumuman</a>
             </div>
         </section>
 
         <section class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="zap"></i> Menu Cepat</h2>
+                <h2><i data-lucide="zap" class="icon"></i> Menu Cepat</h2>
             </div>
             <div class="orgmate-quick orgmate-quick-3">
                 <a href="{{ route('simora.orgmate.struktur') }}"><span class="q-icon"><i
@@ -177,6 +177,7 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var dateEl = document.getElementById('orgmateDate');

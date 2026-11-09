@@ -19,17 +19,45 @@
     @if (!($isDeveloper ?? false))
         <section class="orgmate-card" aria-label="Tambah anggota" style="margin-bottom:14px">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="user-plus"></i> Tambah Anggota (Mahasiswa)</h2>
+                <h2><i data-lucide="user-plus" class="icon"></i> Tambah Anggota (Mahasiswa)</h2>
             </div>
             <form method="POST" action="{{ route('simora.orgmate.anggota.store') }}" class="orgmate-form" enctype="multipart/form-data">
                 @csrf
                 <div class="orgmate-form-grid">
-                    <div class="orgmate-field"><label for="memberName">Nama lengkap</label>
-                        <input id="memberName" name="name" value="{{ old('name') }}" required>
+                    <div class="orgmate-field"><label for="memberMahasiswaSearch">Cari mahasiswa (nama / NIM)</label>
+                        <input id="memberMahasiswaSearch" type="search" placeholder="Ketikan nama atau NIM…" autocomplete="off" data-member-search="memberMahasiswa">
+                        @error('mahasiswa_id')<small class="orgmate-field-error">{{ $message }}</small>@enderror
+                    </div>
+                    <div class="orgmate-field"><label for="memberMahasiswaAngkatan">Angkatan</label>
+                        <select id="memberMahasiswaAngkatan" data-member-angkatan="memberMahasiswa">
+                            <option value="">— Semua angkatan —</option>
+                            @foreach (($angkatanOptions ?? collect()) as $angkatan)
+                                <option value="{{ $angkatan }}">{{ $angkatan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="orgmate-field"><label for="memberMahasiswa">Nama mahasiswa ({{ $prodiLabel ?: 'sesuai prodi organisasi' }})</label>
+                        <select id="memberMahasiswa" name="mahasiswa_id">
+                            <option value="">— Pilih mahasiswa —</option>
+                            @if (($mahasiswaByAngkatan ?? collect())->isEmpty())
+                                <option value="" disabled>Belum ada data mahasiswa untuk prodi ini</option>
+                            @else
+                                @foreach ($mahasiswaByAngkatan as $angkatanLabel => $list)
+                                    <optgroup label="{{ $angkatanLabel }} ({{ $list->count() }} orang)">
+                                        @foreach ($list as $mhs)
+                                            <option value="{{ $mhs->id }}" data-angkatan="{{ $angkatanLabel }}" data-nim="{{ $mhs->nim }}" @selected(old('mahasiswa_id') == $mhs->id)>{{ $mhs->name }} — {{ $mhs->nim }}</option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            @endif
+                        </select>
+                        @error('mahasiswa_id')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                         @error('name')<small class="orgmate-field-error">{{ $message }}</small>@enderror
+                        <small class="orgmate-field-hint">Hanya mahasiswa prodi {{ $prodiLabel ?: 'organisasi ini' }}, terpisah per angkatan. Pilih lewat pencarian agar cepat.</small>
                     </div>
                     <div class="orgmate-field"><label for="memberNim">NIM</label>
-                        <input id="memberNim" name="nim" value="{{ old('nim') }}">
+                        <input id="memberNim" name="nim" value="{{ old('nim') }}" readonly>
+                        <small class="orgmate-field-hint">Terisi otomatis dari pilihan mahasiswa.</small>
                         @error('nim')<small class="orgmate-field-error">{{ $message }}</small>@enderror
                     </div>
                     <div class="orgmate-field"><label for="memberEmail">Email <span>(opsional)</span></label>
@@ -141,7 +169,7 @@
         @foreach ($members as $member)
             <dialog class="orgmate-dialog" id="editMember-{{ $member->id }}" aria-labelledby="editMemberTitle-{{ $member->id }}">
                 <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                    <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                 </form>
                 <h2 class="orgmate-dialog-title" id="editMemberTitle-{{ $member->id }}">Edit Anggota</h2>
                 <form method="POST" action="{{ route('simora.orgmate.anggota.update', $member) }}" enctype="multipart/form-data">
@@ -210,6 +238,43 @@
             </dialog>
         @endforeach
         <script>
+            (function () {
+                var search = document.getElementById('memberMahasiswaSearch');
+                var angkatanSelect = document.getElementById('memberMahasiswaAngkatan');
+                var select = document.getElementById('memberMahasiswa');
+                var nimInput = document.getElementById('memberNim');
+                if (!select) return;
+
+                function applyFilter() {
+                    var q = search ? (search.value || '').trim().toLowerCase() : '';
+                    var angkatan = angkatanSelect ? (angkatanSelect.value || '') : '';
+
+                    select.querySelectorAll('optgroup').forEach(function (group) {
+                        var groupVisible = false;
+                        group.querySelectorAll('option').forEach(function (option) {
+                            var matchesSearch = q === '' || option.textContent.toLowerCase().includes(q);
+                            var matchesAngkatan = angkatan === '' || option.dataset.angkatan === angkatan;
+                            var visible = matchesSearch && matchesAngkatan;
+                            option.hidden = !visible;
+                            option.disabled = !visible;
+                            if (visible) groupVisible = true;
+                        });
+                        group.style.display = groupVisible ? '' : 'none';
+                    });
+                }
+
+                function syncNim() {
+                    var option = select.options[select.selectedIndex];
+                    if (nimInput && option && option.dataset && option.dataset.nim) {
+                        nimInput.value = option.dataset.nim;
+                    }
+                }
+
+                if (search) search.addEventListener('input', applyFilter);
+                if (angkatanSelect) angkatanSelect.addEventListener('change', applyFilter);
+                select.addEventListener('change', syncNim);
+            })();
+
             document.querySelectorAll('[data-edit-open]').forEach((button) => {
                 button.addEventListener('click', () => {
                     const dialog = document.getElementById(button.dataset.dialog);

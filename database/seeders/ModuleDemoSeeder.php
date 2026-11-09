@@ -30,6 +30,8 @@ class ModuleDemoSeeder extends Seeder
      * ke proposal/panitia/presensi/dokumentasi/evaluasi, anggota terhubung
      * ke iuran dan jabatan.
      * Aman dijalankan ulang: dilewati bila data sudah ada.
+     * Modul inventaris/aset dihapus (migrasi 2026_11_08_072232), jadi
+     * seeder tidak lagi membuat data Inventory/AssetLoan.
      */
     public function run(): void
     {

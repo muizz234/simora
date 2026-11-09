@@ -21,7 +21,7 @@ class CashTransactionController extends Controller
         $data = $this->normalize($request->validate($this->rules(true)));
         $data['organization_id'] = $organization->id;
         $data['created_by'] = $request->user()->id;
-        $data['proof_path'] = $request->file('proof')->storePublicly('bukti-kas', 'public');
+        $data['proof_path'] = $request->file('proof')->store('bukti-kas', 'local');
 
         CashTransaction::create($data);
 
@@ -37,7 +37,7 @@ class CashTransactionController extends Controller
 
         if ($request->hasFile('proof')) {
             $this->deleteProof($cashTransaction->proof_path);
-            $data['proof_path'] = $request->file('proof')->storePublicly('bukti-kas', 'public');
+            $data['proof_path'] = $request->file('proof')->store('bukti-kas', 'local');
         }
 
         $cashTransaction->update($data);
@@ -57,10 +57,19 @@ class CashTransactionController extends Controller
             ->with('status', 'Transaksi kas berhasil dihapus.');
     }
 
+    public function download(Request $request, CashTransaction $cashTransaction)
+    {
+        OrganizationScope::assertCanAccessOrganization($request->user(), $cashTransaction->organization_id);
+
+        abort_if($cashTransaction->proof_path === null || ! Storage::disk('local')->exists($cashTransaction->proof_path), 404);
+
+        return Storage::disk('local')->response($cashTransaction->proof_path);
+    }
+
     private function deleteProof(?string $path): void
     {
         if ($path !== null && str_starts_with($path, 'bukti-kas/')) {
-            Storage::disk('public')->delete($path);
+            Storage::disk('local')->delete($path);
         }
     }
 

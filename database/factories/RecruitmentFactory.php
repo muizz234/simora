@@ -21,7 +21,7 @@ class RecruitmentFactory extends Factory
         return [
             'organization_id' => Organization::factory(),
             'created_by' => null,
-            'title' => fake()->randomElement(['Open Recruitment Staf Divisi', 'Rekrutmen Panitia Kegiatan', 'Calon Pengurus Divisi']), 
+            'title' => fake()->randomElement(['Open Recruitment Staf Divisi', 'Rekrutmen Panitia Kegiatan', 'Calon Pengurus Divisi']),
             'division' => fake()->optional()->word(),
             'description' => fake()->paragraph(),
             'deadline' => fake()->dateTimeBetween('now', '+1 month'),

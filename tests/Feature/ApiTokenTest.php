@@ -42,4 +42,13 @@ class ApiTokenTest extends TestCase
             ->assertJsonPath('organization_id', $organization->id)
             ->assertJsonMissingPath('api_token');
     }
+
+    public function test_user_without_api_token_is_rejected_even_with_empty_bearer(): void
+    {
+        User::factory()->create(['api_token' => null]);
+
+        $this->withHeader('Authorization', 'Bearer ')
+            ->getJson(route('api.v1.me'))
+            ->assertUnauthorized();
+    }
 }

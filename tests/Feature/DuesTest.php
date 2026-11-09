@@ -18,7 +18,7 @@ class DuesTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Storage::fake('public');
+        Storage::fake('local');
     }
 
     public function test_organization_can_record_due_and_mark_paid_records_income(): void
@@ -60,7 +60,7 @@ class DuesTest extends TestCase
 
         $income = CashTransaction::where('organization_id', $organization->id)->where('title', 'Iuran Andi Pratama')->firstOrFail();
         $this->assertNotNull($income->proof_path);
-        Storage::disk('public')->assertExists($income->proof_path);
+        Storage::disk('local')->assertExists($income->proof_path);
 
         $this->actingAs($account)
             ->get(route('simora.sentra.iuran'))

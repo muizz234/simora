@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-#[Fillable(['name', 'email', 'nim', 'password', 'role', 'organization_id', 'avatar_path', 'api_token'])]
+#[Fillable(['name', 'email', 'nim', 'password', 'role', 'organization_id', 'avatar_path'])]
 #[Hidden(['password', 'remember_token', 'api_token'])]
 class User extends Authenticatable
 {
@@ -30,7 +31,7 @@ class User extends Authenticatable
         return $this->belongsTo(Organization::class);
     }
 
-    public function memberProfile(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function memberProfile(): HasOne
     {
         return $this->hasOne(Member::class);
     }

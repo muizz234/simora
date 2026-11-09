@@ -29,4 +29,15 @@ class FundRequest extends Model
     {
         return $this->belongsTo(User::class, 'decided_by');
     }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'amount' => 'decimal:2',
+            'decided_at' => 'datetime',
+        ];
+    }
 }

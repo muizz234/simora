@@ -28,9 +28,9 @@
     @endif
 
     <div class="eprogress-stats eprogress-stats-3">
-        <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="calendar-days"></i></span><div><span>Kegiatan</span><strong>{{ $stats['totalKegiatan'] }}</strong><small>Terdaftar di kalender</small></div></article>
-        <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="calendar-check"></i></span><div><span>Kegiatan Berpanitia</span><strong>{{ $stats['kegiatanBerpanitia'] }}</strong><small>Sudah punya susunan panitia</small></div></article>
-        <article class="eprogress-stat eprogress-stat--pastel-purple"><span class="eprogress-stat-icon"><i data-lucide="users"></i></span><div><span>Total Panitia</span><strong>{{ $stats['totalPanitia'] }}</strong><small>Seluruh kegiatan</small></div></article>
+        <article class="eprogress-stat eprogress-stat--pastel-blue"><span class="eprogress-stat-icon"><i data-lucide="calendar-days" class="icon"></i></span><div><span>Kegiatan</span><strong>{{ $stats['totalKegiatan'] }}</strong><small>Terdaftar di kalender</small></div></article>
+        <article class="eprogress-stat eprogress-stat--pastel-green"><span class="eprogress-stat-icon"><i data-lucide="calendar-check" class="icon"></i></span><div><span>Kegiatan Berpanitia</span><strong>{{ $stats['kegiatanBerpanitia'] }}</strong><small>Sudah punya susunan panitia</small></div></article>
+        <article class="eprogress-stat eprogress-stat--pastel-purple"><span class="eprogress-stat-icon"><i data-lucide="users" class="icon"></i></span><div><span>Total Panitia</span><strong>{{ $stats['totalPanitia'] }}</strong><small>Seluruh kegiatan</small></div></article>
     </div>
 
     @if ($activities->isEmpty())
@@ -43,7 +43,7 @@
     @else
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="flag"></i> Pilih Kegiatan</h2>
+                <h2><i data-lucide="flag" class="icon"></i> Pilih Kegiatan</h2>
                 <form method="GET" action="{{ route('simora.e-progress.kepanitiaan') }}" class="orgmate-org-form orgmate-org-form--inline eprogress-panitia-select">
                     @if($selectedOrganization)<input type="hidden" name="organization" value="{{ $selectedOrganization->slug }}">@endif
                     <label for="activitySelect">Kegiatan:</label>
@@ -56,7 +56,7 @@
             </div>
             @if ($selectedActivity)
                 <div class="orgmate-post" style="margin-bottom:12px">
-                    <span class="orgmate-post-icon"><i data-lucide="calendar-check"></i></span>
+                    <span class="orgmate-post-icon"><i data-lucide="calendar-check" class="icon"></i></span>
                     <div style="flex:1;min-width:0">
                         <h3>{{ $selectedActivity->name }}</h3>
                         <p>{{ $selectedActivity->description ?: ($selectedActivity->location ?: 'Tanpa keterangan tambahan.') }}</p>
@@ -72,7 +72,7 @@
 
         <div class="orgmate-card">
             <div class="orgmate-card-head">
-                <h2><i data-lucide="users"></i> Susunan Panitia</h2>
+                <h2><i data-lucide="users" class="icon"></i> Susunan Panitia</h2>
                 <span class="badge gray">{{ $committees->count() }} orang</span>
             </div>
             <div class="orgmate-table-wrap">
@@ -107,7 +107,7 @@
 
         @if(!($isDeveloper ?? false))
             <section class="orgmate-card" aria-label="Tambah panitia">
-                <div class="orgmate-card-head"><h2><i data-lucide="user-plus"></i> Tambah Panitia</h2></div>
+                <div class="orgmate-card-head"><h2><i data-lucide="user-plus" class="icon"></i> Tambah Panitia</h2></div>
                 <form method="POST" action="{{ route('simora.e-progress.kepanitiaan.store') }}" class="orgmate-form">
                     @csrf
                     <div class="orgmate-form-grid">
@@ -141,7 +141,7 @@
             @foreach ($committees as $committee)
                 <dialog class="orgmate-dialog" id="editCommittee-{{ $committee->id }}" aria-labelledby="editCommitteeTitle-{{ $committee->id }}">
                     <form method="dialog" class="orgmate-dialog-close-form" value="close">
-                        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup">✕</button>
+                        <button type="submit" class="orgmate-icon-btn orgmate-dialog-close" aria-label="Tutup"><i data-lucide="x" class="icon" aria-hidden="true"></i></button>
                     </form>
                     <h2 class="orgmate-dialog-title" id="editCommitteeTitle-{{ $committee->id }}">Edit Panitia</h2>
                     <form method="POST" action="{{ route('simora.e-progress.kepanitiaan.update', $committee) }}">
