@@ -1,0 +1,214 @@
+.module-header-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: auto;
+    color: #27415f;
+    font-size: 12px;
+    font-weight: 700
+}
+
+.module-header-label span {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--module-color) 12%, white);
+    color: var(--module-color);
+    font-size: 9px
+}
+
+.module-main {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 30px 0 60px
+}
+
+.module-back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    margin-bottom: 17px;
+    padding: 0 12px;
+    border: 1px solid #e0e7ef;
+    border-radius: 7px;
+    background: #fff;
+    color: #52667f;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700
+}
+
+.module-back:hover {
+    border-color: var(--module-color);
+    color: var(--module-color)
+}
+
+.module-welcome {
+    position: relative;
+    overflow: hidden;
+    min-height: 215px;
+    padding: 30px 34px;
+    border: 1px solid color-mix(in srgb, var(--module-color) 22%, white);
+    border-radius: 15px;
+    background: linear-gradient(115deg, color-mix(in srgb, var(--module-color) 95%, #101b34), color-mix(in srgb, var(--module-color) 70%, #123862));
+    color: #fff;
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--module-color) 18%, transparent)
+}
+
+.module-welcome:after {
+    content: "";
+    position: absolute;
+    right: -65px;
+    bottom: -170px;
+    width: 380px;
+    height: 380px;
+    border: 1px solid #ffffff35;
+    border-radius: 50%;
+    box-shadow: 0 0 0 25px #ffffff0b, 0 0 0 52px #ffffff09
+}
+
+.module-mark {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid #ffffff65;
+    border-radius: 12px;
+    background: #ffffff20;
+    font-size: 21px;
+    font-weight: 800
+}
+
+.module-welcome>p {
+    position: relative;
+    z-index: 1;
+    margin: 17px 0 8px;
+    color: #ffffffc7;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: .16em
+}
+
+.module-welcome h1 {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: clamp(25px, 4vw, 36px);
+    letter-spacing: -.04em
+}
+
+.module-user {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    margin-top: 8px;
+    color: #ffffffd4;
+    font-size: 11px
+}
+
+.module-empty {
+    min-height: 250px;
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #d6dfe9;
+    border-radius: 14px;
+    background: #fff;
+    text-align: center
+}
+
+.empty-symbol {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--module-color) 10%, white);
+    color: var(--module-color);
+    font-size: 22px
+}
+
+.module-empty h2 {
+    margin: 13px 0 5px;
+    color: #203b5b;
+    font-size: 16px
+}
+
+.module-empty p {
+    margin: 0;
+    color: #8996a8;
+    font-size: 11px
+}
+
+@media(max-width:1024px) {
+    .module-main {
+        width: calc(100% - 40px)
+    }
+
+    .module-welcome {
+        padding: 26px 28px
+    }
+}
+
+@media(max-width:768px) {
+    .module-welcome {
+        min-height: 0;
+        padding: 24px 22px
+    }
+
+    .module-welcome h1 {
+        font-size: 22px
+    }
+}
+
+@media(max-width:480px) {
+    .module-main {
+        width: calc(100% - 24px);
+        padding: 18px 0 32px
+    }
+
+    .module-welcome {
+        padding: 20px 18px;
+        border-radius: 12px
+    }
+
+    .module-welcome h1 {
+        font-size: 19px
+    }
+
+    .module-welcome p {
+        font-size: 11px
+    }
+}
+
+@media(max-width:680px) {
+    .module-header-label {
+        font-size: 10px;
+        gap: 5px
+    }
+
+    .module-header-label span {
+        width: 24px;
+        height: 24px
+    }
+
+    .module-main {
+        width: calc(100% - 28px);
+        padding: 22px 0 38px
+    }
+
+    .module-welcome {
+        min-height: 200px;
+        padding: 25px 22px
+    }
+
+    .module-empty {
+        min-height: 210px
+    }
+}

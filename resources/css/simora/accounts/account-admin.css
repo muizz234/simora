@@ -1,0 +1,202 @@
+.account-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #e0e7ef;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 5px 18px #142e500c
+}
+
+.account-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 11px
+}
+
+.account-table th {
+    text-align: left;
+    padding: 13px 15px;
+    color: #8491a3;
+    font-size: 8px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: #f8fafd;
+    border-bottom: 1px solid #e8edf3
+}
+
+.account-table td {
+    padding: 13px 15px;
+    border-bottom: 1px solid #edf1f5;
+    color: #334b69;
+    vertical-align: middle
+}
+
+.account-table tbody tr:last-child td {
+    border-bottom: 0
+}
+
+.account-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: #223c5e
+}
+
+.account-user .account-avatar {
+    width: 34px;
+    height: 34px;
+    flex: none
+}
+
+.account-user small {
+    color: #9aa7b9;
+    font-weight: 400
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 13px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: capitalize
+}
+
+.role-developer {
+    background: #e6efff;
+    color: #1459b6
+}
+
+.role-organization {
+    background: #eaf7f3;
+    color: #23826a
+}
+
+.role-user {
+    background: #eef2f7;
+    color: #64748b
+}
+
+.org-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: #223c5e
+}
+
+.org-cell img {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 50%
+}
+
+.org-full {
+    display: block;
+    margin-top: 3px;
+    color: #9aa7b9;
+    font-size: 9px
+}
+
+.org-none {
+    color: #9aa7b9
+}
+
+.account-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px
+}
+
+.account-actions form {
+    margin: 0
+}
+
+.account-empty {
+    text-align: center;
+    color: #9aa7b9;
+    padding: 30px
+}
+
+.field-group select {
+    width: 100%;
+    min-height: 39px;
+    border: 1px solid #dce4ed;
+    border-radius: 7px;
+    padding: 9px 11px;
+    background: #fff;
+    color: #243c5c;
+    font: inherit;
+    font-size: 11px;
+    outline: 0
+}
+
+.field-group select:focus {
+    border-color: #5b96db;
+    box-shadow: 0 0 0 3px #1265d813
+}
+
+.field-group>input[type=password] {
+    width: 100%;
+    min-height: 39px;
+    border: 1px solid #dce4ed;
+    border-radius: 7px;
+    padding: 9px 11px;
+    background: #fff;
+    color: #243c5c;
+    font: inherit;
+    font-size: 11px;
+    outline: 0
+}
+
+.field-group>input:focus {
+    border-color: #5b96db;
+    box-shadow: 0 0 0 3px #1265d813
+}
+
+@media(max-width:680px) {
+    .account-table {
+        min-width: 700px
+    }
+
+    .account-actions {
+        flex-wrap: wrap
+    }
+}
+
+/* ===== Responsif terpadu ===== */
+@media(max-width:1024px) {
+    .account-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch
+    }
+}
+
+@media(max-width:768px) {
+    .account-admin-main {
+        width: calc(100% - 32px)
+    }
+}
+
+@media(max-width:480px) {
+    .account-admin-main {
+        width: calc(100% - 24px);
+        padding-top: 20px
+    }
+
+    .account-admin-main h1 {
+        font-size: 21px
+    }
+
+    .account-table {
+        min-width: 560px;
+        font-size: 12px
+    }
+
+    .account-actions {
+        flex-direction: column;
+        align-items: stretch
+    }
+}
