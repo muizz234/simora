@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Budget;
 use App\Models\CashTransaction;
 use App\Models\Dues;
-use App\Models\Evaluation;
-use App\Models\Member;
 use App\Models\Organization;
-use App\Models\WorkProgram;
+use App\Modules\EProgress\Contracts\LpjDirectory;
+use App\Modules\EProgress\Contracts\WorkProgramDirectory;
+use App\Modules\EProgress\Data\LpjSummary;
+use App\Modules\Orgmate\Contracts\MemberDirectory;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -17,6 +18,12 @@ use Illuminate\View\View;
 
 class SentraController extends Controller
 {
+    public function __construct(
+        private readonly MemberDirectory $members,
+        private readonly WorkProgramDirectory $workPrograms,
+        private readonly LpjDirectory $lpjs,
+    ) {}
+
     /**
      * Data keuangan masih kosong (belum ada tabel kas/anggaran/pengajuan/iuran).
      * Dashboard menampilkan nol dan keadaan kosong secara jujur.
@@ -162,7 +169,7 @@ class SentraController extends Controller
         $year = (int) $request->query('periode', now()->format('Y'));
         $year = min(max($year, 2000), 2035);
 
-        $query = Budget::query()->with('workProgram');
+        $query = Budget::query();
 
         if ($context['isDeveloper']) {
             $query->when($context['selectedOrganization'] !== null, fn ($q) => $q->where('organization_id', $context['selectedOrganization']->id));
@@ -175,8 +182,9 @@ class SentraController extends Controller
 
         $budgets = $query->where('year', $year)->orderBy('program_name')->paginate(15)->withQueryString();
 
-        $workPrograms = $request->user()->role === 'organization'
-            ? WorkProgram::where('organization_id', $request->user()->organization_id)->orderBy('name')->get(['id', 'name'])
+        $organizationId = $request->user()->organization_id;
+        $workPrograms = $request->user()->role === 'organization' && $organizationId !== null
+            ? $this->workPrograms->forOrganization((int) $organizationId)
             : collect();
 
         return view('simora.SENTRA.rab', array_merge($context, compact('budgets', 'workPrograms', 'year', 'totalAnggaran', 'totalRealisasi')));
@@ -228,8 +236,9 @@ class SentraController extends Controller
 
         $dues = $query->orderBy('name')->paginate(15)->withQueryString();
 
-        $members = $request->user()->role === 'organization'
-            ? Member::where('organization_id', $request->user()->organization_id)->orderBy('name')->get(['id', 'name'])
+        $organizationId = $request->user()->organization_id;
+        $members = $request->user()->role === 'organization' && $organizationId !== null
+            ? $this->members->forOrganization((int) $organizationId)
             : collect();
 
         return view('simora.SENTRA.iuran', array_merge($context, compact('dues', 'members', 'period', 'status', 'total', 'paid', 'collected', 'percent')));
@@ -241,7 +250,7 @@ class SentraController extends Controller
         $year = (int) $request->query('periode', now()->format('Y'));
         $year = min(max($year, 2000), 2035);
 
-        $budgetQuery = Budget::query()->with(['organization', 'workProgram']);
+        $budgetQuery = Budget::query()->with('organization');
 
         if ($context['isDeveloper']) {
             $budgetQuery->when($context['selectedOrganization'] !== null, fn ($q) => $q->where('organization_id', $context['selectedOrganization']->id));
@@ -251,18 +260,14 @@ class SentraController extends Controller
 
         $budgets = $budgetQuery->where('year', $year)->orderBy('program_name')->get();
 
-        // LPJ dari E-PROGRESS: dokumen evaluasi bertipe LPJ per kegiatan.
-        $lpjQuery = Evaluation::query()->with(['activity', 'creator'])->where('type', Evaluation::TYPE_REPORT);
+        // LPJ dari E-PROGRESS diakses lewat batas baca modul (bukan query tabel langsung).
+        $lpjOrganizationId = $context['isDeveloper']
+            ? $context['selectedOrganization']?->id
+            : $request->user()->organization_id;
 
-        if ($context['isDeveloper']) {
-            $lpjQuery->when($context['selectedOrganization'] !== null, fn ($q) => $q->where('organization_id', $context['selectedOrganization']->id));
-        } else {
-            $lpjQuery->where('organization_id', $request->user()->organization_id);
-        }
-
-        $lpjs = $lpjQuery->orderByDesc('created_at')->get();
-        $lpjsByProgram = $lpjs->filter(fn ($lpj) => $lpj->activity?->work_program_id !== null)
-            ->groupBy(fn ($lpj) => $lpj->activity->work_program_id);
+        $lpjs = $this->lpjs->forOrganization($lpjOrganizationId !== null ? (int) $lpjOrganizationId : null);
+        $lpjsByProgram = $lpjs->filter(fn (LpjSummary $lpj): bool => $lpj->workProgramId !== null)
+            ->groupBy(fn (LpjSummary $lpj): int => (int) $lpj->workProgramId);
 
         $totalAnggaran = (float) $budgets->sum('allocated');
         $totalRealisasi = (float) $budgets->sum('realized');

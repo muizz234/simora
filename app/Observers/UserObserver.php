@@ -3,13 +3,14 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Modules\Shared\Events\DomainEventType;
 use App\Support\DomainEventRecorder;
 
 class UserObserver
 {
     public function created(User $user): void
     {
-        DomainEventRecorder::forModel('member.registered', $user, [
+        DomainEventRecorder::forModel(DomainEventType::UserRegistered, $user, [
             'name' => $user->name,
             'role' => $user->role,
         ]);
@@ -21,7 +22,7 @@ class UserObserver
             return;
         }
 
-        DomainEventRecorder::forModel('member.updated', $user, [
+        DomainEventRecorder::forModel(DomainEventType::UserUpdated, $user, [
             'name' => $user->name,
             'role' => $user->role,
         ]);
@@ -29,7 +30,7 @@ class UserObserver
 
     public function deleted(User $user): void
     {
-        DomainEventRecorder::forModel('member.removed', $user, [
+        DomainEventRecorder::forModel(DomainEventType::UserRemoved, $user, [
             'name' => $user->name,
             'role' => $user->role,
         ]);

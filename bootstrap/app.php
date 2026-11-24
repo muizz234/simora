@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthenticateApiToken;
+use App\Http\Middleware\EnsureServiceToken;
 use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Middleware\ForceRootUrlFromRequest;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => EnsureUserHasRole::class,
             'api.token' => AuthenticateApiToken::class,
+            'service.token' => EnsureServiceToken::class,
         ]);
 
         // Supaya Tailwind/asset (Vite) terbaca otomatis saat diakses lewat domain

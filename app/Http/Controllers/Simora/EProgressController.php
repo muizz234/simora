@@ -8,9 +8,9 @@ use App\Models\Attendance;
 use App\Models\Committee;
 use App\Models\Documentation;
 use App\Models\Evaluation;
-use App\Models\Member;
 use App\Models\Organization;
 use App\Models\WorkProgram;
+use App\Modules\Orgmate\Contracts\MemberDirectory;
 use App\Support\OrganizationScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +21,10 @@ use Illuminate\View\View;
 
 class EProgressController extends Controller
 {
+    public function __construct(
+        private readonly MemberDirectory $members,
+    ) {}
+
     public function dashboard(Request $request): View
     {
         $organizationsList = $this->scopedOrganizations($request)
@@ -297,8 +301,9 @@ class EProgressController extends Controller
             ? Committee::where('activity_id', $selectedActivity->id)->orderBy('name')->get()
             : collect();
 
-        $members = $request->user()->role === 'organization'
-            ? Member::where('organization_id', $request->user()->organization_id)->orderBy('name')->get(['id', 'name'])
+        $organizationId = $request->user()->organization_id;
+        $members = $request->user()->role === 'organization' && $organizationId !== null
+            ? $this->members->forOrganization((int) $organizationId)
             : collect();
 
         $stats = [

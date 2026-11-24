@@ -129,7 +129,7 @@
                         @if($lpj->activity)<span class="badge blue">{{ $lpj->activity->name }}</span>@endif
                         @if($lpj->creator)<span class="badge gray">oleh {{ $lpj->creator->name }}</span>@endif
                         <span class="badge gray">{{ $lpj->status === 'selesai' ? 'Selesai' : 'Draft' }}</span>
-                        <span class="badge gray">{{ $lpj->created_at?->locale('id')->translatedFormat('d M Y') ?? '—' }}</span>
+                        <span class="badge gray">{{ $lpj->createdAt?->locale('id')->translatedFormat('d M Y') ?? '—' }}</span>
                     </div>
                 </div>
             </div>

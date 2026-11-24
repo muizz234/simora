@@ -17,3 +17,5 @@ Satu file per aspek penjelasan project. Mulai dari arsitektur, lalu route → bl
 | 11 | [11-fitur-eprogress.md](11-fitur-eprogress.md) | Penjelasan lengkap tiap menu E-Progress |
 | 12 | [12-fitur-sentra.md](12-fitur-sentra.md) | Penjelasan lengkap tiap menu SENTRA |
 | 13 | [13-auth-dan-role.md](13-auth-dan-role.md) | SSO session, role, OrganizationScope, keamanan |
+| 14 | [14-database-schema-akses-dan-sinkronisasi.md](14-database-schema-akses-dan-sinkronisasi.md) | Schema DB + tabel yang diakses tiap halaman (landing, login, panel, ORGMATE, E-Progress, SENTRA) + alur sinkronisasi SSO & antar modul |
+| 15 | [modulSIMORA.md](modulSIMORA.md) | **Dokumentasi lengkap & final project**: gabungan urut isi 01–14 (UI/UX, Blade/CSS/JS, fitur ORGMATE/E-PROGRESS/SENTRA, route/controller/model, database + ERD/DFD/flowchart, auth & sinkronisasi) + microservice readiness (contract/DTO/directory, internal API, health check, retry, outbox & ingest) + hardening P0/P1 (rotasi/expiry token, rate limit per token, circuit breaker, retry/backoff, dead-letter & replay, FK decoupling, event projection, Docker Compose, CI) + pengujian & panduan migrasi |

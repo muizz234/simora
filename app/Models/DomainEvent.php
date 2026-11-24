@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['type', 'subject_type', 'subject_id', 'organization_id', 'payload', 'occurred_at'])]
+#[Fillable(['event_id', 'type', 'subject_type', 'subject_id', 'organization_id', 'payload', 'occurred_at', 'published_at'])]
 class DomainEvent extends Model
 {
     /**
@@ -17,6 +17,7 @@ class DomainEvent extends Model
         return [
             'payload' => 'array',
             'occurred_at' => 'datetime',
+            'published_at' => 'datetime',
         ];
     }
 

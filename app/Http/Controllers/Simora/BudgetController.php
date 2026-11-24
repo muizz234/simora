@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Simora;
 
 use App\Http\Controllers\Controller;
 use App\Models\Budget;
-use App\Models\WorkProgram;
+use App\Modules\EProgress\Contracts\WorkProgramDirectory;
 use App\Support\OrganizationScope;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class BudgetController extends Controller
 {
+    public function __construct(
+        private readonly WorkProgramDirectory $workPrograms,
+    ) {}
+
     public function store(Request $request): RedirectResponse
     {
         $organization = $request->user()->organization;
@@ -64,16 +68,16 @@ class BudgetController extends Controller
         return [
             'work_program_id' => [
                 'nullable',
-                'exists:work_programs,id',
+                'integer',
                 function (string $attribute, mixed $value, \Closure $fail) {
-                    if ($value !== null) {
-                        $belongs = WorkProgram::where('id', $value)
-                            ->where('organization_id', auth()->user()->organization_id)
-                            ->exists();
+                    if ($value === null || $value === '') {
+                        return;
+                    }
 
-                        if (! $belongs) {
-                            $fail('Program kerja harus milik organisasi Anda.');
-                        }
+                    $organizationId = auth()->user()?->organization_id;
+
+                    if ($organizationId === null || ! $this->workPrograms->existsForOrganization((int) $value, (int) $organizationId)) {
+                        $fail('Program kerja harus milik organisasi Anda.');
                     }
                 },
             ],

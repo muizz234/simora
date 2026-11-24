@@ -1,0 +1,112 @@
+services:
+  app:
+    build: .
+    image: simora-app:local
+    container_name: simora-app
+    env_file: .env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: ${DB_DATABASE:-simora}
+      DB_USERNAME: ${DB_USERNAME:-simora}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: database
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - app_storage:/var/www/html/storage
+      - public_files:/var/www/html/public
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: simora-nginx
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - public_files:/var/www/html/public
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: simora-mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-simora}
+      MYSQL_USER: ${DB_USERNAME:-simora}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${DB_ROOT_PASSWORD:-rootsecret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+  queue:
+    build: .
+    image: simora-app:local
+    container_name: simora-queue
+    env_file: .env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: ${DB_DATABASE:-simora}
+      DB_USERNAME: ${DB_USERNAME:-simora}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: database
+    command: php artisan queue:work --tries=3 --timeout=60
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - app_storage:/var/www/html/storage
+      - public_files:/var/www/html/public
+    restart: unless-stopped
+
+  scheduler:
+    build: .
+    image: simora-app:local
+    container_name: simora-scheduler
+    env_file: .env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_DATABASE: ${DB_DATABASE:-simora}
+      DB_USERNAME: ${DB_USERNAME:-simora}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: database
+    command: php artisan schedule:work
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - app_storage:/var/www/html/storage
+      - public_files:/var/www/html/public
+    restart: unless-stopped
+
+volumes:
+  app_storage:
+  public_files:
+  mysql_data:

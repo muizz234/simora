@@ -4,7 +4,9 @@ namespace App\Support;
 
 use App\Models\DomainEvent;
 use App\Models\Organization;
+use App\Modules\Shared\Events\DomainEventType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Mencatat event domain ke tabel outbox (domain_events) untuk sinkronisasi
@@ -16,10 +18,11 @@ class DomainEventRecorder
      * @param  class-string|null  $subjectType
      * @param  array<string, mixed>|null  $payload
      */
-    public static function record(string $type, ?string $subjectType = null, ?int $subjectId = null, ?int $organizationId = null, ?array $payload = null): DomainEvent
+    public static function record(string|DomainEventType $type, ?string $subjectType = null, ?int $subjectId = null, ?int $organizationId = null, ?array $payload = null): DomainEvent
     {
         return DomainEvent::create([
-            'type' => $type,
+            'event_id' => (string) Str::uuid(),
+            'type' => $type instanceof DomainEventType ? $type->value : $type,
             'subject_type' => $subjectType,
             'subject_id' => $subjectId,
             'organization_id' => $organizationId,
@@ -33,7 +36,7 @@ class DomainEventRecorder
      *
      * @param  array<string, mixed>|null  $payload
      */
-    public static function forModel(string $type, Model $model, ?array $payload = null): DomainEvent
+    public static function forModel(string|DomainEventType $type, Model $model, ?array $payload = null): DomainEvent
     {
         $organizationId = null;
 
